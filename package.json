@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jrodriguer/firebasefcm/issues"
   },
-  "homepage": "https://github.com/jrodriguer/firebasefcm#readme"
+  "homepage": "https://github.com/jrodriguer/firebasefcm#readme",
+  "dependencies": {
+    "firebase-admin": "^11.10.1"
+  }
 }
