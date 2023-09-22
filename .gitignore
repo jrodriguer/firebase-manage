@@ -5,8 +5,8 @@
 *.sublime-workspace
 .DS_Store
 
-/.vscode
-/node_modules
+node_modules
+temp/
 
 *.log
 log.txt
