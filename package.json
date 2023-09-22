@@ -1,0 +1,19 @@
+{
+  "name": "firebasefcm",
+  "version": "1.0.0",
+  "description": "Example package for testing Firebase FCM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jrodriguer/firebasefcm.git"
+  },
+  "author": "Julio Rodriguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrodriguer/firebasefcm/issues"
+  },
+  "homepage": "https://github.com/jrodriguer/firebasefcm#readme"
+}
