@@ -1,0 +1,15 @@
+.tmp
+*.tmp
+*.tmp.*
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
+/.vscode
+/node_modules
+
+*.log
+log.txt
+npm-debug.log*
+
+package-lock.json
