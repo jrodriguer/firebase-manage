@@ -17,7 +17,14 @@ admin.initializeApp({
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const pug = require('pug');
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(bodyParser.json());
+
+
 
 async function sendMessageToDevice(token, payload) {
   try {
@@ -28,28 +35,28 @@ async function sendMessageToDevice(token, payload) {
   }
 }
 
-app.post('/send-message', (req, res) => {
-  const { token, message } = req.body;
+// app.post('/send-message', (req, res) => {
+//   const { token, message } = req.body;
 
-  const payload = {
-    notification: {
-      title: 'FCM Test',
-      body: message,
-    },
-  };
+//   const payload = {
+//     notification: {
+//       title: 'FCM Test',
+//       body: message,
+//     },
+//   };
 
-  admin
-    .messaging()
-    .sendToDevice(token, payload)
-    .then((response) => {
-      console.log('Successfully sent message:', response);
-      res.status(200).send('Message sent successfully');
-    })
-    .catch((error) => {
-      console.error('Error sending message:', error);
-      res.status(500).send('Error sending message');
-    });
-});
+//   admin
+//     .messaging()
+//     .sendToDevice(token, payload)
+//     .then((response) => {
+//       console.log('Successfully sent message:', response);
+//       res.status(200).send('Message sent successfully');
+//     })
+//     .catch((error) => {
+//       console.error('Error sending message:', error);
+//       res.status(500).send('Error sending message');
+//     });
+// });
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
