@@ -1,6 +1,7 @@
 const admin = require("firebase-admin");
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 const PROJECT_ID = '<YOUR-PROJECT-ID>';
 const HOST = 'fcm.googleapis.com';
@@ -17,46 +18,41 @@ admin.initializeApp({
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const pug = require('pug');
 
-app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', (req, res) => res.render('index'));
 
+// TODO: Send messaging to FCM 
+app.post('/send-message', (req, res) => {
+  const { token, title, message } = req;
 
-async function sendMessageToDevice(token, payload) {
-  try {
-    const response = await admin.messaging().sendToDevice(token, payload);
-    console.log('Message sent successfully:', response);
-  } catch (error) {
-    console.error('Error sending message:', error);
+  const notification = {
+    title: title,
+    body: message,
   }
-}
 
-// app.post('/send-message', (req, res) => {
-//   const { token, message } = req.body;
+  const payload = {
+    notification
+  };
 
-//   const payload = {
-//     notification: {
-//       title: 'FCM Test',
-//       body: message,
-//     },
-//   };
-
-//   admin
-//     .messaging()
-//     .sendToDevice(token, payload)
-//     .then((response) => {
-//       console.log('Successfully sent message:', response);
-//       res.status(200).send('Message sent successfully');
-//     })
-//     .catch((error) => {
-//       console.error('Error sending message:', error);
-//       res.status(500).send('Error sending message');
-//     });
-// });
+  admin
+    .messaging()
+    .sendToDevice(token, payload)
+    .then((response) => {
+      console.log('Successfully sent message:', response);
+      res.status(200).send('Message sent successfully');
+    })
+    .catch((error) => {
+      console.error('Error sending message:', error);
+      res.status(500).send('Error sending message');
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
