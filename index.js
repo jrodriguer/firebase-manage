@@ -50,7 +50,7 @@ app.post('/send-message', (req, res) => {
 
   admin
     .messaging()
-    .sendToDevice(device, payload)
+    .sendToDevice('AIzaSyCuee_CCVZIO40ZKQ41wXXkBrOsgPzpVSM', payload)
     .then((response) => {
       console.log('Successfully sent message:', response);
       res.status(200).send('Message sent successfully');
