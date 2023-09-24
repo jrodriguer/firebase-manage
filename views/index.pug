@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Send FCM Messages
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    form(id="msform" role="form" action="/send-message" method="POST")
+      fieldset
+        h2.fs-title Messaging
+        h3.fs-subtitle Manage messaging campaigns with the new unified campaign experience.
+        //- label(for="deviceToken") Device Token:
+        input(type="text" name="deviceToken" required)
+        //- br
+        //- label(for="title") Title:
+        input(type="text" name="title"  id="title" placeholder="Type your title" required)
+        //- br
+        //- label(for="body") Mesagge body:
+        textarea(type="text" name="message" id="message" cols="30", rows="10" placeholder="Type your message" required)
+        input(id="btn", type="submit", name="submit", class="action-button", placeholder="Submit")
+        //- br
