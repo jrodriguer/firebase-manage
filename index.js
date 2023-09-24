@@ -2,14 +2,16 @@ const admin = require("firebase-admin");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-
-const PROJECT_ID = '<YOUR-PROJECT-ID>';
-const HOST = 'fcm.googleapis.com';
-const PATH = '/v1/projects/' + PROJECT_ID + '/messages:send';
-const MESSAGING_SCOPE = 'https://www.googleapis.com/auth/firebase.messaging';
-const SCOPES = [MESSAGING_SCOPE];
+const https = require('https');
+const { google } = require('googleapis');
 
 const serviceAccount = require("/home/jrodriguer/code/study/firebasefcm/placeholders/service-account.json");
+const projectId = serviceAccount.project_id;
+const host = 'fcm.googleapis.com';
+const url = '/v1/projects/' + projectId + '/messages:send';
+const messagingScope = 'https://www.googleapis.com/auth/firebase.messaging';
+const scopes = [messagingScope];
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -28,11 +30,75 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.render('index'));
 
-// TODO: Send meessaging to FCM with token
+// TODO: Send messages to clients that are subscribed to the `allusers` topic
+function getAccessToken() {
+  return new Promise(function (resolve, reject) {
+    const jwtClient = new google.auth.JWT(
+      serviceAccount.client_email,
+      null,
+      serviceAccount.private_key,
+      scopes,
+      null
+    );
+    jwtClient.authorize(function (err, tokens) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(tokens.access_token);
+    });
+  });
+}
 
-// TODO: Send messaging to FCM 
+app.post('/send-fcm-message', (req, res) => {
+  const { title, message } = req.body;
+
+  const notification = {
+    title: title,
+    body: message,
+  }
+
+  const payload = {
+    message: {
+      topic: 'allusers',
+      notification
+    }
+  };
+
+  getAccessToken().then(function (accessToken) {
+    const options = {
+      hostname: host,
+      path: url,
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    };
+
+    const request = https.request(options, function (resp) {
+      resp.setEncoding('utf8');
+      resp.on('data', function (data) {
+        console.log('Message sent to Firebase for delivery, response:');
+        console.log(data);
+      });
+    });
+
+    request.on('error', function (err) {
+      console.log('Unable to send message to Firebase');
+      console.log(err);
+    });
+
+    request.write(JSON.stringify(payload));
+    request.end();
+  });
+});
+
+function sendFcmMessage(fcmMessage) {
+}
+
+// TODO: Send messages to device token client 
 app.post('/send-message', (req, res) => {
-  const { device, title, message } = req.body;
+  const { deviceToken, title, message } = req.body;
 
   const notification = {
     title: title,
@@ -46,14 +112,17 @@ app.post('/send-message', (req, res) => {
     // }
   };
 
-  console.log({ device, payload })
-
   admin
     .messaging()
-    .sendToDevice(token, payload)
+    .sendToDevice(deviceToken, payload)
     .then((response) => {
-      console.log('Successfully sent message:', response);
-      res.status(200).send('Message sent successfully');
+      if (response.results[0].error) {
+        console.error('Error sending message:', response.results[0].error);
+        res.status(500).send('Error sending message');
+      } else {
+        console.log('Successfully sent message:', response);
+        res.status(200).send('Message sent successfully');
+      }
     })
     .catch((error) => {
       console.error('Error sending message:', error);
