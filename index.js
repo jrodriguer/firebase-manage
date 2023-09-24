@@ -28,9 +28,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.render('index'));
 
+// TODO: Send meessaging to FCM with token
+
 // TODO: Send messaging to FCM 
 app.post('/send-message', (req, res) => {
-  const { token, title, message } = req;
+  const { device, title, message } = req.body;
 
   const notification = {
     title: title,
@@ -38,12 +40,17 @@ app.post('/send-message', (req, res) => {
   }
 
   const payload = {
+    // message: {
+    // topic: 'allusers',
     notification
+    // }
   };
+
+  console.log({ device, payload })
 
   admin
     .messaging()
-    .sendToDevice(token, payload)
+    .sendToDevice(device, payload)
     .then((response) => {
       console.log('Successfully sent message:', response);
       res.status(200).send('Message sent successfully');
