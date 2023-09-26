@@ -8,7 +8,6 @@ import { google } from "googleapis";
 import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: 'json' };
 import {getFilename, getDirname} from './utils.js';
 
-
 const {
   project_id,
   client_email,
@@ -121,10 +120,7 @@ app.post("/send-message", (req, res) => {
   };
 
   const payload = {
-    // message: {
-    // topic: 'allusers',
     notification,
-    // }
   };
 
   admin
