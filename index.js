@@ -1,44 +1,49 @@
-const admin = require("firebase-admin");
-const express = require("express");
-const bodyParser = require("body-parser");
-const path = require("path");
-const https = require('https');
-const { google } = require('googleapis');
+import admin from "firebase-admin";
+import express, { urlencoded } from "express";
+import bodyParser from "body-parser";
+import path from "path";
+import { request as _request } from "https";
+import { google } from "googleapis";
+import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: 'json' };
 
-const serviceAccount = require("/home/jrodriguer/code/study/firebasefcm/placeholders/service-account.json");
-const projectId = serviceAccount.project_id;
-const host = 'fcm.googleapis.com';
-const url = '/v1/projects/' + projectId + '/messages:send';
-const messagingScope = 'https://www.googleapis.com/auth/firebase.messaging';
+const {
+  project_id,
+  client_email,
+  private_key,
+} = serviceAccount;
+
+const host = "fcm.googleapis.com";
+const url = "/v1/projects/" + project_id + "/messages:send";
+const messagingScope = "https://www.googleapis.com/auth/firebase.messaging";
 const scopes = [messagingScope];
 
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
 });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
 app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/', (req, res) => res.render('index'));
+app.get("/", (req, res) => res.render("index"));
+
 
 // TODO: Send messages to clients that are subscribed to the `allusers` topic
 function getAccessToken() {
   return new Promise(function (resolve, reject) {
     const jwtClient = new google.auth.JWT(
-      serviceAccount.client_email,
+      client_email,
       null,
-      serviceAccount.private_key,
+      private_key,
       scopes,
-      null
+      null,
     );
     jwtClient.authorize(function (err, tokens) {
       if (err) {
@@ -50,41 +55,41 @@ function getAccessToken() {
   });
 }
 
-app.post('/send-fcm-message', (req, res) => {
+app.post("/send-fcm-message", (req, res) => {
   const { title, message } = req.body;
 
   const notification = {
     title: title,
     body: message,
-  }
+  };
 
   const payload = {
     message: {
-      topic: 'allusers',
-      notification
-    }
+      topic: "allusers",
+      notification,
+    },
   };
 
   getAccessToken().then(function (accessToken) {
     const options = {
       hostname: host,
       path: url,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': 'Bearer ' + accessToken
-      }
+        Authorization: "Bearer " + accessToken,
+      },
     };
 
-    const request = https.request(options, function (resp) {
-      resp.setEncoding('utf8');
-      resp.on('data', function (data) {
-        console.log('Message sent to Firebase for delivery, response:');
+    const request = request(options, function (resp) {
+      resp.setEncoding("utf8");
+      resp.on("data", function (data) {
+        console.log("Message sent to Firebase for delivery, response:");
         console.log(data);
       });
     });
 
-    request.on('error', function (err) {
-      console.log('Unable to send message to Firebase');
+    request.on("error", function (err) {
+      console.log("Unable to send message to Firebase");
       console.log(err);
     });
 
@@ -93,22 +98,20 @@ app.post('/send-fcm-message', (req, res) => {
   });
 });
 
-function sendFcmMessage(fcmMessage) {
-}
 
-// TODO: Send messages to device token client 
-app.post('/send-message', (req, res) => {
+// TODO: Send messages to device token client
+app.post("/send-message", (req, res) => {
   const { deviceToken, title, message } = req.body;
 
   const notification = {
     title: title,
     body: message,
-  }
+  };
 
   const payload = {
     // message: {
     // topic: 'allusers',
-    notification
+    notification,
     // }
   };
 
@@ -117,20 +120,19 @@ app.post('/send-message', (req, res) => {
     .sendToDevice(deviceToken, payload)
     .then((response) => {
       if (response.results[0].error) {
-        console.error('Error sending message:', response.results[0].error);
-        res.status(500).send('Error sending message');
+        console.error("Error sending message:", response.results[0].error);
+        res.status(500).send("Error sending message");
       } else {
-        console.log('Successfully sent message:', response);
-        res.status(200).send('Message sent successfully');
+        console.log("Successfully sent message:", response);
+        res.status(200).send("Message sent successfully");
       }
     })
     .catch((error) => {
-      console.error('Error sending message:', error);
-      res.status(500).send('Error sending message');
+      console.error("Error sending message:", error);
+      res.status(500).send("Error sending message");
     });
 });
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
-
