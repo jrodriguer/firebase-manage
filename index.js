@@ -4,7 +4,10 @@ import bodyParser from "body-parser";
 import path from "path";
 import { request as _request } from "https";
 import { google } from "googleapis";
+
 import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: 'json' };
+import {getFilename, getDirname} from './utils.js';
+
 
 const {
   project_id,
@@ -16,6 +19,12 @@ const host = "fcm.googleapis.com";
 const url = "/v1/projects/" + project_id + "/messages:send";
 const messagingScope = "https://www.googleapis.com/auth/firebase.messaging";
 const scopes = [messagingScope];
+
+
+const __filename = getFilename(import.meta.url);
+console.log('__filename: ', __filename);
+const __dirname = getDirname(import.meta.url);
+console.log('__dirname: ', __dirname);
 
 
 admin.initializeApp({
@@ -30,6 +39,9 @@ app.set("view engine", "pug");
 
 app.use(bodyParser.json());
 app.use(urlencoded({ extended: false }));
+
+
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => res.render("index"));
