@@ -41,68 +41,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => res.render("index"));
 
 
-// TODO: Send messages to clients that are subscribed to the `allusers` topic
-function getAccessToken() {
-  return new Promise(function (resolve, reject) {
-    const jwtClient = new google.auth.JWT(
-      client_email,
-      null,
-      private_key,
-      scopes,
-      null,
-    );
-    jwtClient.authorize(function (err, tokens) {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(tokens.access_token);
-    });
-  });
-}
-
-app.post("/send-fcm-message", (req, res) => {
-  const { title, message } = req.body;
-
-  const notification = {
-    title: title,
-    body: message,
-  };
-
-  const payload = {
-    message: {
-      topic: "allusers",
-      notification,
-    },
-  };
-
-  getAccessToken().then(function (accessToken) {
-    const options = {
-      hostname: host,
-      path: url,
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    };
-
-    const request = request(options, function (resp) {
-      resp.setEncoding("utf8");
-      resp.on("data", function (data) {
-        console.log("Message sent to Firebase for delivery, response:");
-        console.log(data);
-      });
-    });
-
-    request.on("error", function (err) {
-      console.log("Unable to send message to Firebase");
-      console.log(err);
-    });
-
-    request.write(JSON.stringify(payload));
-    request.end();
-  });
-});
+// TODO: Send messages to topics
 
 
 // TODO: Send messages to device token client
