@@ -3,7 +3,6 @@ import express, { urlencoded } from "express";
 import bodyParser from "body-parser";
 import path from "path";
 import { request as _request } from "https";
-import { google } from "googleapis";
 
 import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: 'json' };
 import getDirname from './utils.js';
@@ -42,19 +41,33 @@ app.get("/", (req, res) => res.render("index"));
 
 
 // TODO: Send messages to topics
+app.post("/send-message-topic", (req, res) => {
+  const topic = 'allusers';
+  const payload = {
+    notification: {
+      title: title,
+      body: message,
+    }
+  };
+
+  admin.messaging().sendToTopic(topic, payload)
+  .then(function(response) {
+    console.log("Successfully sent message:", response);
+  })
+  .catch(function(error) {
+    console.log("Error sending message:", error);
+  });
+});
 
 
 // TODO: Send messages to device token client
-app.post("/send-message", (req, res) => {
+app.post("/send-message-device", (req, res) => {
   const { deviceToken, title, message } = req.body;
-
-  const notification = {
-    title: title,
-    body: message,
-  };
-
   const payload = {
-    notification,
+    notification: {
+      title: title,
+      body: message,
+    }
   };
 
   admin
