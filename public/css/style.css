@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
 html {
@@ -18,7 +19,6 @@ body {
   color: #222;
   position: relative;
   min-height: 100vh;
-  font-family: montserrat, arial, verdana;
 }
 
 #msform {
