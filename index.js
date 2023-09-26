@@ -6,7 +6,7 @@ import { request as _request } from "https";
 import { google } from "googleapis";
 
 import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: 'json' };
-import {getFilename, getDirname} from './utils.js';
+import getDirname from './utils.js';
 
 const {
   project_id,
@@ -19,12 +19,7 @@ const url = "/v1/projects/" + project_id + "/messages:send";
 const messagingScope = "https://www.googleapis.com/auth/firebase.messaging";
 const scopes = [messagingScope];
 
-
-const __filename = getFilename(import.meta.url);
-console.log('__filename: ', __filename);
 const __dirname = getDirname(import.meta.url);
-console.log('__dirname: ', __dirname);
-
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
