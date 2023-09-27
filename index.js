@@ -5,18 +5,8 @@ import path from "path";
 import { request as _request } from "https";
 
 import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: 'json' };
-import getDirname from './utils.js';
+import { getDirname } from './utils.js';
 
-const {
-  project_id,
-  client_email,
-  private_key,
-} = serviceAccount;
-
-const host = "fcm.googleapis.com";
-const url = "/v1/projects/" + project_id + "/messages:send";
-const messagingScope = "https://www.googleapis.com/auth/firebase.messaging";
-const scopes = [messagingScope];
 
 const __dirname = getDirname(import.meta.url);
 
@@ -32,9 +22,6 @@ app.set("view engine", "pug");
 
 app.use(bodyParser.json());
 app.use(urlencoded({ extended: false }));
-
-
-
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => res.render("index"));
@@ -42,18 +29,22 @@ app.get("/", (req, res) => res.render("index"));
 
 // TODO: Send messages to topics
 app.post("/send-message-topic", (req, res) => {
+  const { title, body } = req.body;
   const topic = 'allusers';
-  const payload = {
+  const message = {
     notification: {
-      title: title,
-      body: message,
-    }
+      title,
+      body
+    },
+    topic
   };
 
-  admin.messaging().sendToTopic(topic, payload)
-  .then(function(response) {
-    console.log("Successfully sent message:", response);
-  })
+  admin
+    .messaging()
+    .send(message)
+    .then(function(response) {
+      console.log("Successfully sent message:", response);
+    })
   .catch(function(error) {
     console.log("Error sending message:", error);
   });
@@ -62,11 +53,11 @@ app.post("/send-message-topic", (req, res) => {
 
 // TODO: Send messages to device token client
 app.post("/send-message-device", (req, res) => {
-  const { deviceToken, title, message } = req.body;
+  const { deviceToken, title, body } = req.body;
   const payload = {
     notification: {
-      title: title,
-      body: message,
+      title,
+      body
     }
   };
 
