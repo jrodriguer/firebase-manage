@@ -4,9 +4,8 @@ import bodyParser from "body-parser";
 import path from "path";
 import { request as _request } from "https";
 
-import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: 'json' };
-import { getDirname } from './utils.js';
-
+import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: "json" };
+import { getDirname } from "./utils.js";
 
 const __dirname = getDirname(import.meta.url);
 
@@ -26,30 +25,28 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => res.render("index"));
 
-
 // TODO: Send messages to topics
 app.post("/send-message-topic", (req, res) => {
   const { title, body } = req.body;
-  const topic = 'allusers';
+  const topic = "all-users";
   const message = {
     notification: {
       title,
-      body
+      body,
     },
-    topic
+    topic,
   };
 
   admin
     .messaging()
     .send(message)
-    .then(function(response) {
+    .then(function (response) {
       console.log("Successfully sent message:", response);
     })
-  .catch(function(error) {
-    console.log("Error sending message:", error);
-  });
+    .catch(function (error) {
+      console.log("Error sending message:", error);
+    });
 });
-
 
 // TODO: Send messages to device token client
 app.post("/send-message-device", (req, res) => {
@@ -57,8 +54,8 @@ app.post("/send-message-device", (req, res) => {
   const payload = {
     notification: {
       title,
-      body
-    }
+      body,
+    },
   };
 
   admin
