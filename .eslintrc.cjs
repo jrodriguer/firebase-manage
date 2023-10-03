@@ -1,46 +1,56 @@
-export const env = {
-    "browser": true,
-    "node": true,
-    "es6": true
-};
+module.exports = {
+  env: {
+    browser: true,
+    node: true,
+    es6: true,
+  },
 
-export const parserOptions = {
-    "ecmaVersion": "latest",
-    "sourceType": "module",
-};
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+  },
 
-export const ecmaFeatures = {
-    "arrowFunctions": true,
-    "binaryLiterals": true,
-    "blockBindings": true,
-    "classes": true,
-    "defaultParams": true,
-    "destructuring": true,
-    "forOf": true,
-    "generators": true,
-    "modules": true,
-    "objectLiteralComputedProperties": true,
-    "objectLiteralDuplicateProperties": true,
-    "objectLiteralShorthandMethods": true,
-    "objectLiteralShorthandProperties": true,
-    "octalLiterals": true,
-    "regexUFlag": true,
-    "regexYFlag": true,
-    "spread": true,
-    "superInFunctions": true,
-    "templateStrings": true,
-    "unicodeCodePointEscapes": true,
-    "globalReturn": true,
-    "jsx": true
-};
+  ecmaFeatures: {
+    arrowFunctions: true,
+    binaryLiterals: true,
+    blockBindings: true,
+    classes: true,
+    defaultParams: true,
+    destructuring: true,
+    forOf: true,
+    generators: true,
+    modules: true,
+    objectLiteralComputedProperties: true,
+    objectLiteralDuplicateProperties: true,
+    objectLiteralShorthandMethods: true,
+    objectLiteralShorthandProperties: true,
+    octalLiterals: true,
+    regexUFlag: true,
+    regexYFlag: true,
+    spread: true,
+    superInFunctions: true,
+    templateStrings: true,
+    unicodeCodePointEscapes: true,
+    globalReturn: true,
+    jsx: true,
+  },
 
-export const rules = {
+  rules: {
     //
     //Possible Errors
     //
     // The following rules point out areas where you might have made mistakes.
     //
-    "comma-dangle": 2,
+    "comma-dangle": [
+      "error",
+      {
+        arrays: "only-multiline",
+        objects: "only-multiline",
+        imports: "never",
+        exports: "never",
+        functions: "never",
+      },
+    ],
     "no-cond-assign": 2,
     "no-console": 1,
     "no-constant-condition": 2,
@@ -49,8 +59,8 @@ export const rules = {
     "no-dupe-args": 2,
     "no-dupe-keys": 2,
     "no-duplicate-case": 2,
-    "no-empty": 2,
-    "no-empty-class": 2,
+    "no-empty": 1,
+    "no-empty-character-class": 2,
     "no-ex-assign": 2,
     "no-extra-boolean-cast": 2,
     "no-extra-parens": 0,
@@ -62,7 +72,6 @@ export const rules = {
     "no-negated-in-lhs": 2,
     "no-obj-calls": 2,
     "no-regex-spaces": 2,
-    "no-reserved-keys": 2,
     "no-sparse-arrays": 2,
     "no-unreachable": 2,
     "use-isnan": 2,
@@ -76,18 +85,17 @@ export const rules = {
     // They either prescribe a better way of doing something or help you avoid footguns.
     //
     "block-scoped-var": 0,
-    "complexity": 0,
+    complexity: 0,
     "consistent-return": 2,
-    "curly": 2,
+    curly: 2,
     "default-case": 2,
     "dot-notation": 2,
-    "eqeqeq": 2,
+    eqeqeq: 2,
     "guard-for-in": 2,
     "no-alert": 2,
     "no-caller": 2,
     "no-div-regex": 2,
     "no-else-return": 2,
-    "no-empty-label": 2,
     "no-eq-null": 2,
     "no-eval": 2,
     "no-extend-native": 2,
@@ -120,15 +128,16 @@ export const rules = {
     "no-void": 2,
     "no-warning-comments": [0, { terms: ["todo", "fixme"], location: "start" }],
     "no-with": 2,
-    "radix": 2,
+    radix: 2,
     "vars-on-top": 2,
     "wrap-iife": 2,
-    "yoda": 2,
+    yoda: 2,
 
     //
     // Strict Mode
     //
     // These rules relate to using strict mode.
     //
-    "strict": 0 // controls location of Use Strict Directives. 0: required by `babel-eslint`
+    strict: 0, // controls location of Use Strict Directives. 0: required by `babel-eslint`
+  },
 };
