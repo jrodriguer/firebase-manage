@@ -51,28 +51,37 @@ app.post("/send-message-topic", (req, res) => {
 // TODO: Send messages to device token client
 app.post("/send-message-device", (req, res) => {
   const { deviceToken, title, body } = req.body;
-  const payload = {
-    notification: {
-      title,
-      body,
-    },
-  };
+
+  console.log({ deviceToken, title, body });
 
   admin
     .messaging()
-    .sendToDevice(deviceToken, payload)
-    .then((response) => {
-      if (response.results[0].error) {
-        console.error("Error sending message:", response.results[0].error);
-        res.status(500).send("Error sending message");
+    .sendToDevice(
+      [deviceToken],
+      {
+        data: {
+          foo: "bar",
+        },
+        notification: {
+          title,
+          body,
+        },
+      },
+      {
+        // Required for background/terminated app state messages on iOS and android
+        contentAvailable: true,
+        priority: "high",
+      },
+    )
+    .then((res) => {
+      if (res.failureCount) {
+        console.log("Failed", res.results[0].error);
       } else {
-        console.log("Successfully sent message:", response);
-        res.status(200).send("Message sent successfully");
+        console.log("Success");
       }
     })
-    .catch((error) => {
-      console.error("Error sending message:", error);
-      res.status(500).send("Error sending message");
+    .catch((err) => {
+      console.log("Error:", err);
     });
 });
 
