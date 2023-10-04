@@ -5,15 +5,12 @@ html
     title Send FCM Messages
     link(rel="stylesheet", href="/css/style.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400")
-    //- script(src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js")
-    //- script(src="https://www.gstatic.com/firebasejs/8.6.7/firebase-messaging.js")
-    //- script(src="https://www.gstatic.com/firebasejs/8.6.7/firebase.js")
   body
     form(id="msform" role="form" action="/send-message-topic" method="POST")
       fieldset
         h2.fs-title Messaging
         h3.fs-subtitle Manage messaging campaigns with the new unified campaign experience.
-        input(type="text" name="deviceToken" required)
+        input(type="text" name="deviceToken")
         input(type="text" name="title"  id="title" placeholder="Type your title" required)
         textarea(type="text" name="body" id="message" cols="30", rows="10" placeholder="Type your message" required)
         input(id="btn", type="submit", name="submit", class="action-button", placeholder="Submit")
