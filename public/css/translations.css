@@ -10,18 +10,18 @@
   font-size: 14px;
 }
 
-.container {
+.grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
 }
 
-.container__text {
+.grid-item {
   font-size: 13px;
   text-align: start;
 }
 
-.container__button {
+.grid-button {
   display: flex;
   justify-content: end;
 }
