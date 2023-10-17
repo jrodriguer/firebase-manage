@@ -70,7 +70,7 @@ body {
   font-size: 13px;
 }
 
-#msform .action-button {
+#msform .submit {
   width: 100px;
   background: #27ae60;
   font-weight: bold;
@@ -84,14 +84,14 @@ body {
   font-size: 14px;
 }
 
-#msform .action-button:hover,
-#msform .action-button:focus {
+#msform .submit:hover,
+#msform .submit:focus {
   box-shadow:
     0 0 0 2px white,
     0 0 0 3px #27ae60;
 }
 
-.nav-router {
+.router {
   font-weight: normal;
   font-size: 13px;
   color: #666;
