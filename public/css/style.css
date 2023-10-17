@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 html {
@@ -19,6 +19,20 @@ body {
   color: #222;
   position: relative;
   min-height: 100vh;
+}
+
+.fs-title {
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.fs-subtitle {
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
 }
 
 #msform {
@@ -65,7 +79,7 @@ body {
   border-radius: 1px;
   cursor: pointer;
   padding: 10px;
-  margin: 10px 5px;
+  margin: 20px 5px;
   text-decoration: none;
   font-size: 14px;
 }
@@ -77,16 +91,8 @@ body {
     0 0 0 3px #27ae60;
 }
 
-.fs-title {
-  font-size: 15px;
-  text-transform: uppercase;
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
-
-.fs-subtitle {
+.nav-router {
   font-weight: normal;
   font-size: 13px;
   color: #666;
-  margin-bottom: 20px;
 }
