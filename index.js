@@ -157,35 +157,32 @@ let config = {
   },
 };
 
-app.get("/download-template", () => {
+app.get("/download-template", (req, res, next) => {
   admin
     .remoteConfig()
     .getTemplate()
     .then((template) => {
       console.log("ETag from server: " + template.etag);
-      const templateStr = JSON.stringify(template);
-      console.log(templateStr);
-      // fs.writeFileSync("config.json", templateStr);
+      res.send(JSON.stringify(template));
     })
-    .catch((err) => {
-      console.error("Unable to get template");
-      console.error(err);
-    });
+    .catch((err) => nex(err));
 });
 
-app.get("/list-versions", () => {
+app.get("/list-versions", (req, res, next) => {
   admin
     .remoteConfig()
     .listVersions()
     .then((listVersionsResult) => {
       console.log("Successfully fetched the list of versions");
+
+      let versions = [];
       listVersionsResult.versions.forEach((version) => {
-        console.log("version", JSON.stringify(version));
+        versions.push(version);
       });
+
+      res.send(versions);
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch((err) => nex(err));
 });
 
 // for (let key in merged.generic) {
