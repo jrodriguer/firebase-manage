@@ -185,6 +185,31 @@ app.get("/list-versions", (req, res, next) => {
     .catch((err) => nex(err));
 });
 
+app.post("/publish-template", (req, res, next) => {
+  const config = admin.remoteConfig();
+  let template;
+
+  try {
+    const template = config.createTemplateFromJSON(
+      fs.readFileSync("./config.json", "UTF8"),
+    );
+  } catch (err) {
+    return next(new Error("Failed to read file"));
+  }
+
+  config
+    .publishTemplate(template)
+    .then((updatedTemplate) => {
+      console.log("Template has been published");
+      console.log("ETag from server: " + updatedTemplate.etag);
+      res.status(200).send("Template has been published");
+    })
+    .catch((err) => {
+      console.error("Failed to publish template: ", err);
+      next(err);
+    });
+});
+
 // for (let key in merged.generic) {
 //   config.parameters[`generic_${key}`] = {
 //     defaultValue: {
