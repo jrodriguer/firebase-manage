@@ -105,7 +105,7 @@ app.post("/send-message-device", (req, res) => {
  * REMOTE CONFIG
  * */
 
-// let merged = { ...ca, ...de, ...en, ...es, ...eu, ...fr, ...gl, ...pt };
+let merged = { ...ca, ...de, ...en, ...es, ...eu, ...fr, ...gl, ...pt };
 
 let config = {
   conditions: [
@@ -157,22 +157,23 @@ let config = {
   },
 };
 
-app.post("/download-remote-config", () => {
+app.get("/download-template", () => {
   admin
     .remoteConfig()
     .getTemplate()
     .then((template) => {
       console.log("ETag from server: " + template.etag);
       const templateStr = JSON.stringify(template);
-      fs.writeFileSync("config.json", templateStr);
+      console.log(templateStr);
+      // fs.writeFileSync("config.json", templateStr);
     })
-    .catch(function (err) {
+    .catch((err) => {
       console.error("Unable to get template");
       console.error(err);
     });
 });
 
-app.post("", () => {
+app.get("/list-versions", () => {
   admin
     .remoteConfig()
     .listVersions()
