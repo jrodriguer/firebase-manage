@@ -7,10 +7,18 @@ html
     link(rel="stylesheet", href="/css/translations.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400")
   body
-    form(id="msform" role="form" action="/" method="")
+    form(id="msform")
       fieldset
         h2.fs-title Translations 
         h3.fs-subtitle Manage translations with Firebase Remote Config
         br
-        a(class="btn", href="/download-template") Download 
+        div.container
+          div.container__text
+            p Uploaded versions
+          div.container__button
+            a.btn(href="/list-versions") 
+          div.container__text
+            p Current version
+          div.container__button
+            a.btn(href="/download-template") 
 
