@@ -7,18 +7,23 @@ html
     link(rel="stylesheet", href="/css/translations.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400")
   body
-    form(id="msform")
+    form(id="msform" role="form" action="/publish-template" method="PUT")
       fieldset
         h2.fs-title Translations 
         h3.fs-subtitle Manage translations with Firebase Remote Config.
         div.grid-container
           div.grid-item
-            p Uploaded versions
+            p Control versions 
           div.grid-button
             a.btn(href="/list-versions") 
           div.grid-item
-            p Current version
+            p Current version 
           div.grid-button
             a.btn(href="/download-template")
-        br 
-        a.btn(href="/publish-template") Test publish template
+          div.grid-item(id="item-c")
+            p Upload file (JSON)
+            label(for="uploads")
+            input(type="file", name="publish", id="uploads", accept=".json" multiple)
+        input.submit(type="submit", name="submit", placeholder="Submit")
+        br
+        a.router(href="/") To back.
