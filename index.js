@@ -121,13 +121,26 @@ app.get("/list-versions", (req, res, next) => {
     .catch((err) => nex(err));
 });
 
-app.post("/publish-template", (req, res, next) => {
+function validateTemplate(template) {
+  admin
+    .remoteConfig()
+    .validateTemplate(template)
+    .then(function (validatedTemplate) {
+      console.log("Template was valid and safe to use");
+    })
+    .catch(function (err) {
+      console.error("Template is invalid and cannot be published");
+      console.error(err);
+    });
+}
+
+app.put("/publish-template", (req, res, next) => {
   const config = admin.remoteConfig();
   let template;
 
   try {
     const template = config.createTemplateFromJSON(
-      fs.readFileSync("./config.json", "UTF8"),
+      fs.readFileSync("config.json", "UTF8"),
     );
   } catch (err) {
     return next(new Error("Failed to read file"));
