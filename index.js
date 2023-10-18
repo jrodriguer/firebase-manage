@@ -57,10 +57,8 @@ app.post("/send-message-topic", (req, res) => {
     });
 });
 
-app.post("/send-message-device", (req, res) => {
+app.post("/send-message-device", (req, res, next) => {
   const { deviceToken, title, body } = req.body;
-
-  console.log({ deviceToken, title, body });
 
   admin
     .messaging()
@@ -88,9 +86,7 @@ app.post("/send-message-device", (req, res) => {
         console.log("Success");
       }
     })
-    .catch((err) => {
-      console.log("Error:", err);
-    });
+    .catch((err) => nex(err));
 });
 
 /*
