@@ -122,15 +122,17 @@ app.get("/list-versions", (req, res, next) => {
 });
 
 function validateTemplate(template) {
-  admin
+  return admin
     .remoteConfig()
     .validateTemplate(template)
     .then(function (validatedTemplate) {
       console.log("Template was valid and safe to use");
+      return true;
     })
     .catch(function (err) {
       console.error("Template is invalid and cannot be published");
       console.error(err);
+      return false;
     });
 }
 
@@ -139,9 +141,13 @@ app.put("/publish-template", (req, res, next) => {
   let template;
 
   try {
-    const template = config.createTemplateFromJSON(
+    template = config.createTemplateFromJSON(
       fs.readFileSync("config.json", "UTF8"),
     );
+    const isValid = await validateTemplate(template);
+    if (!isValid) {
+      return nex(new Error("Template is invalid"));
+    }
   } catch (err) {
     return next(new Error("Failed to read file"));
   }
