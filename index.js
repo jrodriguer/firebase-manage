@@ -7,14 +7,6 @@ import * as fs from "fs";
 
 import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: "json" };
 import { getDirname } from "./utils.js";
-import ca from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/ca.json" assert { type: "json" };
-import de from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/de.json" assert { type: "json" };
-import en from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/en.json" assert { type: "json" };
-import es from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/es.json" assert { type: "json" };
-import eu from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/eu.json" assert { type: "json" };
-import fr from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/fr.json" assert { type: "json" };
-import gl from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/gl.json" assert { type: "json" };
-import pt from "/home/jrr/code/project/wenea-app-capacitor/src/assets/i18n/pt.json" assert { type: "json" };
 
 const __dirname = getDirname(import.meta.url);
 
@@ -105,58 +97,6 @@ app.post("/send-message-device", (req, res) => {
  * REMOTE CONFIG
  * */
 
-let merged = { ...ca, ...de, ...en, ...es, ...eu, ...fr, ...gl, ...pt };
-
-let config = {
-  conditions: [
-    {
-      name: "For English Android Users",
-      expression: "device.os == 'android' && device.language in ['en']",
-      tagColor: "CYAN",
-    },
-    {
-      name: "For Portugal Android Users",
-      expression: "device.os == 'android' && device.country in ['PT']",
-      tagColor: "GREEN",
-    },
-    {
-      name: "For Catalan Android Users",
-      expression: "device.os == 'android' && device.language in ['ca']",
-      tagColor: "ORANGE",
-    },
-    {
-      name: "For Deutch Android Users",
-      expression: "device.os == 'android' && device.country in ['DE']",
-      tagColor: "PURPLE",
-    },
-    {
-      name: "For French Android Users",
-      expression: "device.os == 'android' && device.language in ['fr']",
-      tagColor: "BLUE",
-    },
-    {
-      name: "For Galician Android Users",
-      expression: "device.os == 'android' && device.language in ['gl']",
-      tagColor: "PINK",
-    },
-    {
-      name: "For Vasque Android Users",
-      expression: "device.os == 'android' && device.language in ['eu']",
-      tagColor: "BROWN",
-    },
-  ],
-  parameters: {},
-  version: {
-    versionNumber: "1",
-    updateTime: "2023-10-13T10:14:34.232466Z",
-    updateUser: {
-      email: "juliorodriguezramirez@gmail.com",
-    },
-    updateOrigin: "CONSOLE",
-    updateType: "INCREMENTAL_UPDATE",
-  },
-};
-
 app.get("/download-template", (req, res, next) => {
   admin
     .remoteConfig()
@@ -209,42 +149,3 @@ app.post("/publish-template", (req, res, next) => {
       next(err);
     });
 });
-
-// for (let key in merged.generic) {
-//   config.parameters[`generic_${key}`] = {
-//     defaultValue: {
-//       value: es.generic[key],
-//     },
-//     conditionalValues: {
-//       "For English Android Users": {
-//         value: en.generic[key],
-//       },
-//       "For Portugal Android Users": {
-//         value: pt.generic[key],
-//       },
-//       "For Catalan Android Users": {
-//         value: ca.generic[key],
-//       },
-//       "For Deutch Android Users": {
-//         value: de.generic[key],
-//       },
-//       "For French Android Users": {
-//         value: fr.generic[key],
-//       },
-//       "For Galician Android Users": {
-//         value: gl.generic[key],
-//       },
-//       "For Vasque Android Users": {
-//         value: eu.generic[key],
-//       },
-//     },
-//     valueType: "STRING",
-//   };
-// }
-//
-// let json = JSON.stringify(config, null, 2);
-//
-// fs.writeFileSync("remote-config.json", json, "UTF8", function (err) {
-//   if (err) throw err;
-//   console.log("complete");
-// });
