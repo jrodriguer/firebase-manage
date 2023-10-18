@@ -1,0 +1,30 @@
+{
+  "etag": "etag-43190597036-4",
+  "conditions": [
+    {
+      "name": "AndroidUsers",
+      "expression": "device.os == 'android'",
+      "tagColor": "PURPLE"
+    },
+    {
+      "name": "iOSUsers",
+      "expression": "device.os == 'ios'",
+      "tagColor": "GREEN"
+    }
+  ],
+  "parameters": {
+    "welcome_message": {
+      "defaultValue": {
+        "value": "Welcome"
+      },
+      "conditionalValues": {
+        "AndroidUsers": {
+          "value": "Welcome Android User"
+        },
+        "iOSUsers": {
+          "value": "Welcome iOS User"
+        }
+      }
+    }
+  }
+}
