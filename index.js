@@ -4,11 +4,14 @@ import bodyParser from "body-parser";
 import path from "path";
 import { request as _request } from "https";
 import * as fs from "fs";
+import multer from "multer";
 
 import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: "json" };
 import { getDirname } from "./utils.js";
 
 const __dirname = getDirname(import.meta.url);
+
+const upload = multer({ dest: "uploads/" });
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -136,31 +139,39 @@ function validateTemplate(template) {
     });
 }
 
-app.put("/publish-template", (req, res, next) => {
-  const config = admin.remoteConfig();
-  let template;
+app.put(
+  "/publish-template",
+  upload.single("publish"),
+  async (req, res, next) => {
+    const config = admin.remoteConfig();
+    let template;
 
-  try {
-    template = config.createTemplateFromJSON(
-      fs.readFileSync("config.json", "UTF8"),
-    );
-    const isValid = await validateTemplate(template);
-    if (!isValid) {
-      return nex(new Error("Template is invalid"));
+    try {
+      if (!req.file) {
+        throw new Error("No file uploaded");
+      }
+
+      const fileContent = fs.readFileSync(req.file.path, "UTF8");
+      template = config.createTemplateFromJSON(fileContent);
+
+      const isValid = await validateTemplate(template);
+      if (!isValid) {
+        return nex(new Error("Template is invalid"));
+      }
+    } catch (err) {
+      return next(new Error(err));
     }
-  } catch (err) {
-    return next(new Error("Failed to read file"));
-  }
 
-  config
-    .publishTemplate(template)
-    .then((updatedTemplate) => {
-      console.log("Template has been published");
-      console.log("ETag from server: " + updatedTemplate.etag);
-      res.status(200).send("Template has been published");
-    })
-    .catch((err) => {
-      console.error("Failed to publish template: ", err);
-      next(err);
-    });
-});
+    config
+      .publishTemplate(template)
+      .then((updatedTemplate) => {
+        console.log("Template has been published");
+        console.log("ETag from server: " + updatedTemplate.etag);
+        res.status(200).send("Template has been published");
+      })
+      .catch((err) => {
+        console.error("Failed to publish template: ", err);
+        next(err);
+      });
+  },
+);
