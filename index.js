@@ -5,8 +5,7 @@ import path from "path";
 import { request as _request } from "https";
 import * as fs from "fs";
 import multer from "multer";
-
-import serviceAccount from "/home/jrr/code/study/firebasefcm/placeholders/service-account.json" assert { type: "json" };
+import serviceAccount from "./placeholders/service-account.json" assert { type: "json" };
 import { getDirname } from "./utils.js";
 
 const __dirname = getDirname(import.meta.url);
