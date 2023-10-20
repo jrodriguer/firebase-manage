@@ -155,7 +155,7 @@ function validateTemplate(template) {
     });
 }
 
-app.put(
+app.post(
   "/publish-template",
   upload.single("publish"),
   async (req, res, next) => {
