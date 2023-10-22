@@ -1,5 +1,5 @@
 {
-  "name": "firebasefcm",
+  "name": "firebase-manage",
   "version": "1.0.0",
   "type": "module",
   "description": "Example package for testing Firebase FCM",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/jrodriguer/firebasefcm.git"
+    "url": "git+ssh://git@github.com/jrodriguer/firebase-manage.git"
   },
   "author": "Julio Rodriguez",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jrodriguer/firebasefcm/issues"
+    "url": "https://github.com/jrodriguer/firebase-manage/issues"
   },
-  "homepage": "https://github.com/jrodriguer/firebasefcm#readme",
+  "homepage": "https://github.com/jrodriguer/firebase-manage#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
