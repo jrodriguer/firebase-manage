@@ -1,9 +1,9 @@
 var express = require("express")
 
-var {messagingView} = require("../controllers/messagingController");
+var messagingController = require("../controllers/messagings");
 
 var router = express.Router();
 
-router.get("/messaging", messagingView);
+router.get("/messaging", messagingController.messagingView);
 
 module.exports = router;
