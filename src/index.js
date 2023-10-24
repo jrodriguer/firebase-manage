@@ -1,9 +1,5 @@
 // import admin from "firebase-admin";
-// import bodyParser from "body-parser";
-// import express, { urlencoded } from "express";
-// import path from "path";
 
-// import { getDirname } from "./utils.js";
 // import serviceAccount from "./placeholders/service-account.json" assert { type: "json" };
 
 var p = require("body-parser");
@@ -11,7 +7,7 @@ var express = require("express");
 var fs = require("fs");
 var join = require("path").join;
 
-var {getDirname} = require("./utils");
+// var {getDirname} = require("./utils");
 
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
@@ -19,8 +15,6 @@ var {getDirname} = require("./utils");
 
 var app = express();
 app.set("view engine", "pug");
-
-// const __dirname = getDirname(import.meta.url);
 
 app.use(p.json());
 app.use(express.urlencoded({ extended: false }));
@@ -42,7 +36,7 @@ app.use(express.urlencoded({ extended: false }));
 // });
 
 app.set("views", join(__dirname, "views"));
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 
 app.use("/", require("./routes/messaging"));
 
