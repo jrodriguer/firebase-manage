@@ -1,10 +1,9 @@
 var admin = require("firebase-admin");
+var serviceAccount = require("../../placeholders/service-account.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(require "../../placeholders/service-account.json"),
-});
+admin.initializeApp({credential: admin.credential.cert(serviceAccount)});
 
-exports.sendMessageToTopic = function(title, body, topic) {
+const sendMessageToTopic = ({title, body, topic}) => {
   const message = {
     notification: {
       title,
@@ -16,7 +15,7 @@ exports.sendMessageToTopic = function(title, body, topic) {
   return admin.messaging().send(message);
 }
 
-exports.sendMessageToDevice = function(title, body, token) {
+const sendMessageToDevice = (title, body, token) => {
   const message = {
     notification: {
       title,
@@ -26,4 +25,6 @@ exports.sendMessageToDevice = function(title, body, token) {
   };
 
   return admin.messaging().send(message);
-}
+};
+
+module.exports = {sendMessageToTopic, sendMessageToDevice};
