@@ -11,7 +11,6 @@ const messagingView = (req, res) => {
 const sendMessage = (req, res) => {
   const {token, title, body} = req.body;
   const fcmMessage = new FCMMessage(token, title, body);
-  console.log(fcmMessage);
   const message = fcmMessage.buildMessage();
 
   admin
