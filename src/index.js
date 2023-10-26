@@ -31,7 +31,7 @@ app.use(function (req, res, next) {
 
 app.use(express.static("public"));
 
-app.use("/", require(apiRoutes));
+app.use("/", apiRoutes);
 
 const PORT = process.env.PORT || 3000;
 
