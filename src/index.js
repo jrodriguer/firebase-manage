@@ -2,6 +2,7 @@ var bodyParser = require("body-parser");
 var express = require("express");
 var fs = require("fs");
 var join = require("path").join;
+var routes = require("./routes/apiRoutes");
 
 var app = express();
 
@@ -30,7 +31,7 @@ app.use(function (req, res, next) {
 
 app.use(express.static("public"));
 
-app.use("/", require("./routes/messaging"));
+app.use("/", require(routes));
 
 const PORT = process.env.PORT || 3000;
 
