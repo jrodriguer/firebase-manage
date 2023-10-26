@@ -5,7 +5,6 @@ var messagingController = require("../controllers/messagingController");
 var router = express.Router();
 
 router.get("/messaging", messagingController.messagingView);
-router.post("/send-message-topic", messagingController.sendMessageToTopic);
-router.post("/send-message-device", messagingController.sendMessageToDevice);
+router.post("/send-message/:id?", messagingController.sendMessage);
 
 module.exports = router;
