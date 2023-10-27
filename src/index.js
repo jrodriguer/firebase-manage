@@ -11,7 +11,7 @@ app.set("views", join(__dirname, "views"));
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(function (req, res, next) {
+app.use((req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Methods",
@@ -35,6 +35,6 @@ app.use("/", apiRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, function() {
+app.listen(PORT, () {
   console.log(`Server running at http://localhost:${PORT}`);
 });
