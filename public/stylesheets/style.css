@@ -6,7 +6,6 @@
 
 html {
   height: 100%;
-  /*Image only BG fallback*/
   /*background = gradient + image pattern combo*/
   background: linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
 }
@@ -19,20 +18,6 @@ body {
   color: #222;
   position: relative;
   min-height: 100vh;
-}
-
-.fs-title {
-  font-size: 15px;
-  text-transform: uppercase;
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
-
-.fs-subtitle {
-  font-weight: normal;
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 20px;
 }
 
 #msform {
@@ -55,6 +40,20 @@ body {
   width: 80%;
   margin: 0 auto;
   position: static;
+}
+
+.msform__title {
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.msform__subtitle {
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
 }
 
 #msform input,
@@ -91,32 +90,35 @@ body {
     0 0 0 3px #27ae60;
 }
 
-.router {
+.msform__nav {
   font-weight: normal;
   font-size: 13px;
   color: #666;
 }
 
-.grid-container {
+.grid {
   display: grid;
+  grid-gap: 15px;
+  margin-bottom: 20px;  
+}
+
+.grid-2col {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   grid-auto-flow: row;
-  grid-gap: 15px;
-  margin: 0px 0 20px;
 }
 
-.grid-item {
+.grid__lcol {
   font-size: 13px;
   text-align: start;
 }
 
-.grid-button {
+.grid__rcol {
   display: flex;
   justify-content: end;
 }
 
-#item-c {
+#expand-row {
   grid-column: 1 / 3;
 }
 

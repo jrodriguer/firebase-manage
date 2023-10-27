@@ -9,18 +9,18 @@ html
   body
     form(id="msform" role="form" action="/publish-template" method="POST", enctype="multipart/form-data")
       fieldset
-        h2.fs-title Translations 
-        h3.fs-subtitle Manage translations with Firebase Remote Config.
-        div.grid-container
-          div.grid-item
+        h2.msform__title Translations 
+        h3.msform__subtitle Manage translations with Firebase Remote Config.
+        div.grid-2col
+          .grid__lcol
             p Control versions 
-          div.grid-button
+          .grid__rcol
             a.btn(href="/list-versions") 
-          div.grid-item
+          .grid__lcol
             p Current version 
-          div.grid-button
+          .grid__rcol
             a.btn(href="/download-template")
-          div.grid-item(id="item-c")
+          .grid__lcol(id="expand-row")
             label(for="uploads") Upload file (JSON)
             input(type="file", name="publish", id="uploads", accept=".json" multiple)
         input.submit(type="submit", name="submit", placeholder="Submit")

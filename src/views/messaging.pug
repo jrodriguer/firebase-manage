@@ -8,11 +8,11 @@ html
   body
     form(id="msform" role="form" action="/send-message" method="POST")
       fieldset
-        h2.fs-title Messaging
-        h3.fs-subtitle Manage messaging campaigns with the new unified campaign experience.
-        input(type="text" name="token")
+        h2.msform__title Messaging
+        h3.msform__subtitle Manage messaging campaigns with the new unified campaign experience.
+        input(type="text" name="token" placeholder="Add token device")
         input(type="text" name="title"  id="title" placeholder="Type your title" required)
-        textarea(type="text" name="body" id="message" cols="30", rows="10" placeholder="Type your message" required)
-        input.submit(type="submit", name="submit", placeholder="Submit") 
+        textarea(type="text" name="body" id="message" cols="30" rows="10" placeholder="Type your message" required)
+        input.submit(type="submit" name="submit" placeholder="Submit") 
         br 
-        a.router(href="/translations") To remote config, manage translations.
+        a.msform__nav(href="/translations") To remote config, manage translations.
