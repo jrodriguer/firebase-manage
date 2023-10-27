@@ -8,64 +8,6 @@ app.get("/", (req, res) => res.render("index"));
 app.get("/translations", (req, res) => res.render("translations"));
 
 /*
- *  FCM
- * */
-
-app.post("/send-message-topic", (req, res) => {
-  const { title, body } = req.body;
-  const topic = "all_users";
-  const message = {
-    notification: {
-      title,
-      body,
-    },
-    topic,
-  };
-
-  admin
-    .messaging()
-    .send(message)
-    .then(function (response) {
-      console.log("Successfully sent message:", response);
-    })
-    .catch(function (error) {
-      console.log("Error sending message:", error);
-    });
-});
-
-app.post("/send-message-device", (req, res, next) => {
-  const { deviceToken, title, body } = req.body;
-
-  admin
-    .messaging()
-    .sendToDevice(
-      [deviceToken],
-      {
-        data: {
-          foo: "bar",
-        },
-        notification: {
-          title,
-          body,
-        },
-      },
-      {
-        // Required for background/terminated app state messages on iOS and android
-        contentAvailable: true,
-        priority: "high",
-      },
-    )
-    .then((res) => {
-      if (res.failureCount) {
-        console.log("Failed", res.results[0].error);
-      } else {
-        console.log("Success");
-      }
-    })
-    .catch((err) => nex(err));
-});
-
-/*
  * REMOTE CONFIG
  * */
 
