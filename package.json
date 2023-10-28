@@ -28,6 +28,6 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "eslint": "^8.50.0"
+    "eslint": "^8.52.0"
   }
 }
