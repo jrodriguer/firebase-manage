@@ -1,8 +1,5 @@
-var admin = require("firebase-admin");
-var FCMMessage = require("../models/FCMMessage");
-var serviceAccount = require("../../placeholders/service-account.json");
-
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+const admin = require("../firebaseAdmin");
+const FCMMessage = require("../models/FCMMessage");
 
 const messagingView = (req, res) => {
   res.render('messaging');
@@ -13,7 +10,7 @@ const sendMessage = (req, res) => {
   const fcmMessage = new FCMMessage(token, title, body);
   const message = fcmMessage.buildMessage();
 
-  admin
+  admin 
     .messaging() 
     .send(message)
     .then((response) => {
