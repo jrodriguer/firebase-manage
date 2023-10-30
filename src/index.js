@@ -2,7 +2,7 @@ var bodyParser = require("body-parser");
 var express = require("express");
 var fs = require("fs");
 var join = require("path").join;
-var apiRoutes= require("./routes/apiRoutes");
+var apiRoutes = require("./routes/apiRoutes");
 
 var app = express();
 

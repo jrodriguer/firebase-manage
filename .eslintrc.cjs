@@ -2,12 +2,12 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    es6: true,
+    es6: false,
   },
 
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 5,
+    sourceType: "script",
   },
 
   ecmaFeatures: {
@@ -32,7 +32,6 @@ module.exports = {
     templateStrings: true,
     unicodeCodePointEscapes: true,
     globalReturn: true,
-    jsx: true,
   },
 
   rules: {
@@ -48,7 +47,7 @@ module.exports = {
         objects: "only-multiline",
         imports: "never",
         exports: "never",
-        functions: "never",
+        functions: "only-multiline",
       },
     ],
     "no-cond-assign": 2,
@@ -116,7 +115,7 @@ module.exports = {
     "no-octal": 2,
     "no-octal-escape": 2,
     "no-param-reassign": 2,
-    "no-process-env": 2,
+    "no-process-env": 1,
     "no-proto": 2,
     "no-redeclare": 2,
     "no-return-assign": 2,
