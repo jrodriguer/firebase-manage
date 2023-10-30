@@ -13,11 +13,11 @@ const checkIfAuthenticated = (req, res, next) => {
   _getAuthToken(req, res, async () => {
     try {
       const { authToken } = req;
-      const userInfo = await firebase.auth().verifyIdToken(authToken);
+      const userInfo = await admin.auth().verifyIdToken(authToken);
       req.authId = userInfo.uid;
       return next();
     } catch (e) {
-      console.log({error: e})
+      console.log({ error: e })
       return res.status(401).send({ error: 'You are not authorized to make this request' });
     }
   });
@@ -26,13 +26,13 @@ const checkIfAuthenticated = (req, res, next) => {
 const checkIfAdmin = (req, res, next) => {
   _getAuthToken(req, res, async () => {
     try {
-      const userInfo = await firebase.auth().verifyIdToken(req.authToken);
+      const userInfo = await admin.auth().verifyIdToken(req.authToken);
       if (userInfo.admin === true) {
         req.authId = userInfo.uid;
         return next();
       }
     } catch (e) {
-      console.log({error: e})
+      console.log({ error: e })
       return res.status(401).send({ error: 'You are not authorized to make this request' });
     }
   });

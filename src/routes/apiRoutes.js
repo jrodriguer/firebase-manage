@@ -5,7 +5,7 @@ const loginController = require("../controllers/loginController");
 const router = express.Router();
 
 router.get("/", loginController.loginView);
-router.post("/sign-in",  loginController.signIn);
+router.get("/retrieve-user",  loginController.retrieveUser);
 router.get("/messaging", messagingController.messagingView);
 router.post("/send-message", messagingController.sendMessage);
 
