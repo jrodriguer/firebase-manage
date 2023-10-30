@@ -1,21 +1,41 @@
-var admin = require("firebase-admin");
+const { admin } = require("../firebaseAdmin");
 
-const authMiddleware = (request, response, next) => {
-  const headerToken = request.headers.authorization;
-  if (!headerToken) {
-    return response.send({ message: "No token provided" }).status(401);
+const _getAuthToken = (req, res, next) => {
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    req.authToken = req.headers.authorization.split(' ')[1];
+  } else {
+    req.authToken = null;
   }
+  next();
+};
 
-  if (headerToken && headerToken.split(" ")[0] !== "Bearer") {
-    response.send({ message: "Invalid token" }).status(401);
-  }
+const checkIfAuthenticated = (req, res, next) => {
+  _getAuthToken(req, res, async () => {
+    try {
+      const { authToken } = req;
+      const userInfo = await firebase.auth().verifyIdToken(authToken);
+      req.authId = userInfo.uid;
+      return next();
+    } catch (e) {
+      console.log({error: e})
+      return res.status(401).send({ error: 'You are not authorized to make this request' });
+    }
+  });
+};
 
-  const token = headerToken.split(" ")[1];
-  admin
-    .auth()
-    .verifyIdToken(token)
-    .then(() => next())
-    .catch(() => response.send({ message: "Could not authorize" }).status(403));
-}
+const checkIfAdmin = (req, res, next) => {
+  _getAuthToken(req, res, async () => {
+    try {
+      const userInfo = await firebase.auth().verifyIdToken(req.authToken);
+      if (userInfo.admin === true) {
+        req.authId = userInfo.uid;
+        return next();
+      }
+    } catch (e) {
+      console.log({error: e})
+      return res.status(401).send({ error: 'You are not authorized to make this request' });
+    }
+  });
+};
 
-module.exports = authMiddleware;
+module.exports = { checkIfAuthenticated, checkIfAdmin };
