@@ -20,7 +20,7 @@ body {
   min-height: 100vh;
 }
 
-#msform {
+.msform {
   width: 400px;
   margin: 50px auto;
   text-align: center;
@@ -30,7 +30,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-#msform fieldset {
+.msform fieldset {
   background: white;
   border: 0 none;
   border-radius: 3px;
@@ -56,8 +56,8 @@ body {
   margin-bottom: 20px;
 }
 
-#msform input,
-#msform textarea {
+.msform input,
+.msform textarea {
   padding: 15px;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -69,7 +69,7 @@ body {
   font-size: 13px;
 }
 
-#msform .submit {
+.msform .submit {
   width: 100px;
   background: #27ae60;
   font-weight: bold;
@@ -83,8 +83,8 @@ body {
   font-size: 14px;
 }
 
-#msform .submit:hover,
-#msform .submit:focus {
+.msform .submit:hover,
+.msform .submit:focus {
   box-shadow:
     0 0 0 2px white,
     0 0 0 3px #27ae60;
