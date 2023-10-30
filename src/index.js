@@ -1,10 +1,10 @@
-var bodyParser = require("body-parser");
-var express = require("express");
-var fs = require("fs");
-var join = require("path").join;
-var apiRoutes = require("./routes/apiRoutes");
+const bodyParser = require("body-parser");
+const express = require("express");
+const fs = require("fs");
+const join = require("path").join;
+const apiRoutes = require("./routes/apiRoutes");
 
-var app = express();
+const app = express();
 
 app.set("view engine", "pug");
 app.set("views", join(__dirname, "views"));

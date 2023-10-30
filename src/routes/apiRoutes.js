@@ -1,8 +1,8 @@
-var express = require("express");
-var messagingController = require("../controllers/messagingController");
-var loginController = require("../controllers/loginController");
+const express = require("express");
+const messagingController = require("../controllers/messagingController");
+const loginController = require("../controllers/loginController");
 
-var router = express.Router();
+const router = express.Router();
 
 router.get("/", loginController.loginView);
 router.post("/sign-in",  loginController.signIn);
