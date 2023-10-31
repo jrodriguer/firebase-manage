@@ -1,24 +1,32 @@
-var admin = require("../firebaseAdmin");
+var admin = require("../firebaseAdmin"),
+  http = require("http"),
+  https = require("https");
 
 function loginView(req, res) {
   res.render("login");
 }
 
-function retrieveUser(req, res) {
-  var email = req.body.email;
+function login(req, res) {
+  var email = req.body.email,
+    password = req.body.password;
 
-  admin
-    .auth()
-    .getUserByEmail(email)
-    .then(function (userRecord) {
-      console.log("Successfully fetched user data:" + userRecord.toJSON());
-      res.status(200).json({ message: "Login successfully" });
-    })
-    .catch(function (error) {
-      console.log("Error fetching user data:" + error);
-      res.status(500).json({ error: "Login failed" });
+  // TODO: Add WENEA_USER_LOGIN https post request
+  var post_options = {
+    path: "/",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-App-Version": WENEA_VERSION,
+    },
+  };
+
+  var post_req = https.request(post_options, function (res) {
+    res.setEncoding("utf8");
+    res.on("data", function (chunk) {
+      console.log("Response: " + chunk);
     });
+  });
 }
 
 exports.loginView = loginView;
-exports.retrieveUser = retrieveUser;
+exports.login = login;
