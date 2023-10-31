@@ -3,4 +3,4 @@ var admin = require("firebase-admin"),
 
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 
-exports.admin = admin;
+module.exports = admin;

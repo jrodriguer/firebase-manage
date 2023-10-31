@@ -9,7 +9,7 @@ function sendMessage(req, res) {
   var token = req.body.token,
     title = req.body.title,
     body = req.body.body;
-  var fcmMessage = new FCMMessage(token, title, body);
+  var fcmMessage = FCMMessage.call(token, title, body);
   var message = fcmMessage.buildMessage();
 
   admin

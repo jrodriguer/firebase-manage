@@ -47,4 +47,4 @@ FCMMessage.prototype.getTopic = function () {
   return this.topic;
 };
 
-exports.FCMMessage = FCMMessage;
+module.exports = FCMMessage;
