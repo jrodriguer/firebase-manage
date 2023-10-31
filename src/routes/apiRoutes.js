@@ -1,11 +1,11 @@
-const express = require("express");
-const messagingController = require("../controllers/messagingController");
-const loginController = require("../controllers/loginController");
+var express = require("express"),
+  messagingController = require("../controllers/messagingController"),
+  loginController = require("../controllers/loginController");
 
-const router = express.Router();
+var router = express.Router();
 
 router.get("/", loginController.loginView);
-router.post("/retrieve-user",  loginController.retrieveUser);
+router.post("/retrieve-user", loginController.retrieveUser);
 router.get("/messaging", messagingController.messagingView);
 router.post("/send-message", messagingController.sendMessage);
 

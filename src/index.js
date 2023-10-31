@@ -1,17 +1,17 @@
-const bodyParser = require("body-parser");
-const express = require("express");
-const fs = require("fs");
-const join = require("path").join;
-const apiRoutes = require("./routes/apiRoutes");
+var bodyParser = require("body-parser"),
+  express = require("express"),
+  fs = require("fs"),
+  join = require("path").join,
+  apiRoutes = require("./routes/apiRoutes");
 
-const app = express();
+var app = express();
 
 app.set("view engine", "pug");
 app.set("views", join(__dirname, "views"));
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
-app.use((req, res, next) => {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Methods",
@@ -33,8 +33,8 @@ app.use(express.static("public"));
 
 app.use("/", apiRoutes);
 
-const PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.listen(PORT, function () {
+  console.log("Server running at http://localhost:" + PORT);
 });
