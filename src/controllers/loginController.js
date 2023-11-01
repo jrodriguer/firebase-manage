@@ -97,4 +97,4 @@ function _loginRequest(options, data) {
 //   post_req.end();
 // }
 
-modules.exports = { loginView: loginView, login: login };
+module.exports = { loginView: loginView, login: login };

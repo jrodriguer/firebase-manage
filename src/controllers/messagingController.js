@@ -24,7 +24,7 @@ function sendMessage(req, res) {
     });
 }
 
-modules.exports = {
+module.exports = {
   messagingView: messagingView,
   sendMessage: sendMessage,
 };
