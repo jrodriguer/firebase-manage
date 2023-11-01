@@ -5,7 +5,7 @@ var express = require("express"),
 var router = express.Router();
 
 router.get("/", loginController.loginView);
-router.post("/retrieve-user", loginController.retrieveUser);
+router.post("/login", loginController.login);
 router.get("/messaging", messagingController.messagingView);
 router.post("/send-message", messagingController.sendMessage);
 
