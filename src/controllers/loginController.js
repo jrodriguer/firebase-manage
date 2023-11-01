@@ -7,97 +7,94 @@ function loginView(req, res) {
 }
 
 function login(req, res) {
-  var post_data = JSON.stringify({
+  var data = JSON.stringify({
     email: req.body.email,
     password: req.body.password,
   });
 
-  var post_options = {
+  var options = {
     hostname: "backend-des.wenea.site",
     port: 443,
     path: "/api/3.0.2/user/login",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(post_data),
+      "Content-Length": Buffer.byteLength(data),
       "X-App-Version": "3.0.2",
     },
   };
 
-  var post_req = https.request(post_options, function (response) {
-    response.setEncoding("utf8");
-    response.on("data", function (chunk) {
-      console.log("Response: " + chunk);
-    });
-    response.on("end", function () {
-      if (res.statusCode >= 200 && res.statusCode < 300) {
-        res.status(200).json({ message: "Request successful" });
-      } else if (res.statusCode === 404) {
-        res.status(404).json({
-          error: "The requested resource was not found on this server",
-        });
-      } else {
-        console.error("Request failed with status code: " + res.statusCode);
-      }
-    });
+  return _loginRequest(options, data).then(function (b) {
+    return JSON.parse(b);
   });
-
-  // post_req.on("error", function (err) {
-  //   console.error("Error: " + err);
-  // });
-
-  post_req.write(post_data);
-  post_req.end();
 }
 
-function _sendFCMToken() {
-  var post_data = JSON.stringify({
-    registration_id: userFCMToken,
-    type: "android",
-  });
+function _loginRequest(options, data) {
+  return new Promise(function (resolve, reject) {
+    var resBody = "";
 
-  var post_options = {
-    hostname: "backend-des.wenea.site",
-    port: 443,
-    path: "/api/3.0.2/user/fcm-devices",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(post_data),
-      "X-App-Version": "3.0.2",
-      Authorization: "Bearer " + userToken,
-    },
-  };
+    var req = https.request(options, function (res) {
+      res.setEncoding("utf8");
 
-  var post_req = https.request(post_options, function (res) {
-    res.setEncoding("utf8");
-    res.on("data", function (chunk) {
-      console.log("Response: " + chunk);
+      res.on("data", function (chunk) {
+        console.log("Response: " + chunk);
+        resBody += chunk;
+      });
+
+      res.on("end", function () {
+        // if (response.statusCode >= 200 && response.statusCode < 300) {
+        //   res.status(200).json({ message: "Request successful" });
+        // } else if (response.statusCode === 404) {
+        //   res.status(404).json({
+        //     error: "The requested resource was not found on this server",
+        //   });
+        // } else {
+        //   console.error(
+        //     "Request failed with status code: " + response.statusCode,
+        //   );
+        // }
+
+        resolve(resBody);
+      });
     });
-  });
 
-  post_req.write(post_data);
-  post_req.end();
+    req.on("error", function (err) {
+      reject(err);
+    });
+
+    req.write(data);
+    req.end();
+  });
 }
 
-// function _buildTokenHeader(token) {
-//     let header = new HttpHeaders({
+// function _sendFCMToken() {
+//   var post_data = JSON.stringify({
+//     registration_id: userFCMToken,
+//     type: "android",
+//   });
+//
+//   var post_options = {
+//     hostname: "backend-des.wenea.site",
+//     port: 443,
+//     path: "/api/3.0.2/user/fcm-devices",
+//     method: "POST",
+//     headers: {
 //       "Content-Type": "application/json",
-//       Authorization: "Token " + token,
-//       "X-App-Version": WENEA_VERSION,
+//       "Content-Length": Buffer.byteLength(post_data),
+//       "X-App-Version": "3.0.2",
+//       Authorization: "Bearer " + userToken,
+//     },
+//   };
+//
+//   var post_req = https.request(post_options, function (res) {
+//     res.setEncoding("utf8");
+//     res.on("data", function (chunk) {
+//       console.log("Response: " + chunk);
 //     });
-//     return header;
-//   }
-
-// function _buildSelfTokenHeader() {
-//   var header;
-//   if (this.isLoggedIn()) {
-//     header = this.buildTokenHeader(this.userToken);
-//   } else {
-//     header = BASE_REST_HEADER;
-//   }
-//   return header;
+//   });
+//
+//   post_req.write(post_data);
+//   post_req.end();
 // }
 
-exports.loginView = loginView;
-exports.login = login;
+modules.exports = { loginView: loginView, login: login };
