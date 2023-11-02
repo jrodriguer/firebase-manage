@@ -13,9 +13,9 @@ function login(req, res) {
   });
 
   var options = {
-    hostname: "backend-des.wenea.site",
+    hostname: "backend-dehesa.wenea.site",
     port: 443,
-    path: "/api/3.0.2/user/login",
+    path: "/api/v7/user/login",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,30 +31,27 @@ function login(req, res) {
 
 function _loginRequest(options, data) {
   return new Promise(function (resolve, reject) {
-    var resBody = "";
+    var responseBody = "";
 
     var req = https.request(options, function (res) {
       res.setEncoding("utf8");
 
       res.on("data", function (chunk) {
-        console.log("Response: " + chunk);
-        resBody += chunk;
+        responseBody += chunk;
       });
 
       res.on("end", function () {
-        // if (response.statusCode >= 200 && response.statusCode < 300) {
-        //   res.status(200).json({ message: "Request successful" });
-        // } else if (response.statusCode === 404) {
-        //   res.status(404).json({
-        //     error: "The requested resource was not found on this server",
-        //   });
-        // } else {
-        //   console.error(
-        //     "Request failed with status code: " + response.statusCode,
-        //   );
-        // }
-
-        resolve(resBody);
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          try {
+            resolve(JSON.parse(responseBody));
+          } catch (error) {
+            reject(new Error("Failed to parse JSON response"));
+          }
+        } else {
+          reject(
+            new Error("Request failed with status code: " + res.statusCode),
+          );
+        }
       });
     });
 
