@@ -1,67 +1,67 @@
-var admin = require("../firebaseAdmin.js"),
-  http = require("http"),
-  https = require("https");
+const admin = require('../firebaseAdmin.js')
+const http = require('http')
+const https = require('https')
 
-function loginView(req, res) {
-  res.render("login");
+function loginView (req, res) {
+  res.render('login')
 }
 
-function login(req, res) {
-  var data = JSON.stringify({
+function login (req, res) {
+  const data = JSON.stringify({
     email: req.body.email,
-    password: req.body.password,
-  });
+    password: req.body.password
+  })
 
-  var options = {
-    hostname: "backend-dehesa.wenea.site",
+  const options = {
+    hostname: 'backend-dehesa.wenea.site',
     port: 443,
-    path: "/api/v7/user/login",
-    method: "POST",
+    path: '/api/v7/user/login',
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(data),
-      "X-App-Version": "3.0.2",
-    },
-  };
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(data),
+      'X-App-Version': '3.0.2'
+    }
+  }
 
   return _loginRequest(options, data).then(function (b) {
-    return JSON.parse(b);
-  });
+    return JSON.parse(b)
+  })
 }
 
-function _loginRequest(options, data) {
+function _loginRequest (options, data) {
   return new Promise(function (resolve, reject) {
-    var responseBody = "";
+    let responseBody = ''
 
-    var req = https.request(options, function (res) {
-      res.setEncoding("utf8");
+    const req = https.request(options, function (res) {
+      res.setEncoding('utf8')
 
-      res.on("data", function (chunk) {
-        responseBody += chunk;
-      });
+      res.on('data', function (chunk) {
+        responseBody += chunk
+      })
 
-      res.on("end", function () {
+      res.on('end', function () {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           try {
-            resolve(JSON.parse(responseBody));
+            resolve(JSON.parse(responseBody))
           } catch (error) {
-            reject(new Error("Failed to parse JSON response"));
+            reject(new Error('Failed to parse JSON response'))
           }
         } else {
           reject(
-            new Error("Request failed with status code: " + res.statusCode),
-          );
+            new Error('Request failed with status code: ' + res.statusCode)
+          )
         }
-      });
-    });
+      })
+    })
 
-    req.on("error", function (err) {
-      reject(err);
-    });
+    req.on('error', function (err) {
+      reject(err)
+    })
 
-    req.write(data);
-    req.end();
-  });
+    req.write(data)
+    req.end()
+  })
 }
 
 // function _sendFCMToken() {
@@ -94,4 +94,4 @@ function _loginRequest(options, data) {
 //   post_req.end();
 // }
 
-module.exports = { loginView: loginView, login: login };
+module.exports = { loginView, login }

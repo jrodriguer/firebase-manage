@@ -7,44 +7,44 @@
  * @param {String} body - body message to send.
  * @param {String} topic - topic suscribe.
  */
-function FCMMessage(token, title, body, topic) {
-  this.token = token;
-  this.title = title;
-  this.body = body;
-  this.topic = "all_users";
+function FCMMessage (token, title, body, topic) {
+  this.token = token
+  this.title = title
+  this.body = body
+  this.topic = 'all_users'
 }
 
-function buildMessage() {
-  var message = {
+function buildMessage () {
+  const message = {
     notification: {
       title: this.title,
-      body: this.body,
-    },
-  };
-
-  if (!this.token) {
-    message.token = this.token;
-  } else {
-    message.topic = this.topic;
+      body: this.body
+    }
   }
 
-  return message;
+  if (!this.token) {
+    message.token = this.token
+  } else {
+    message.topic = this.topic
+  }
+
+  return message
 }
 
 FCMMessage.prototype.getToken = function () {
-  return this.token;
-};
+  return this.token
+}
 
 FCMMessage.prototype.getTitle = function () {
-  return this.title;
-};
+  return this.title
+}
 
 FCMMessage.prototype.getBody = function () {
-  return this.body;
-};
+  return this.body
+}
 
 FCMMessage.prototype.getTopic = function () {
-  return this.topic;
-};
+  return this.topic
+}
 
-module.exports = FCMMessage;
+module.exports = FCMMessage
