@@ -22,7 +22,7 @@ function buildMessage() {
     },
   };
 
-  if (this.token !== "") {
+  if (!this.token) {
     message.token = this.token;
   } else {
     message.topic = this.topic;
