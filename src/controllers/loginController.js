@@ -7,12 +7,12 @@ function loginView(req, res) {
 }
 
 function login(req, res) {
-  var data = JSON.stringify({
+  const data = JSON.stringify({
     email: req.body.email,
     password: req.body.password,
   })
 
-  var options = {
+  const options = {
     hostname: 'backend-dehesa.wenea.site',
     port: 443,
     path: '/api/v7/user/login',

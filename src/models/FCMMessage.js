@@ -15,20 +15,36 @@ function FCMMessage(token, title, body, topic) {
 }
 
 function buildMessage() {
-  var message = {
+  const message = {
     notification: {
       title: this.title,
       body: this.body,
     },
   }
 
-  if (this.token !== '') {
+  if (!this.token) {
     message.token = this.token
   } else {
     message.topic = this.topic
   }
 
   return message
+}
+
+FCMMessage.prototype.getToken = function () {
+  return this.token
+}
+
+FCMMessage.prototype.getTitle = function () {
+  return this.title
+}
+
+FCMMessage.prototype.getBody = function () {
+  return this.body
+}
+
+FCMMessage.prototype.getTopic = function () {
+  return this.topic
 }
 
 module.exports = FCMMessage

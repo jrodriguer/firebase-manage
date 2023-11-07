@@ -16,7 +16,6 @@ function sendMessage(req, res) {
     .messaging()
     .send(message)
     .then(function (response) {
-      console.log('Successfully sent message to topic:' + response)
       res.status(200).json({ message: 'Message sent successfully' })
     })
     .catch(function (error) {
