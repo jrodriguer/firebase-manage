@@ -25,5 +25,5 @@ function sendMessage(req, res) {
 
 module.exports = {
   messagingView: messagingView,
-  sendMessage: sendMessage,
+  sendMessage: sendMessage
 }

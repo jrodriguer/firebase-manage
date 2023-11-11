@@ -33,7 +33,7 @@ function _loginRequest(options, data) {
   return new Promise(function (resolve, reject) {
     var responseBody = ''
 
-    var req = https.request(options, function (res) {
+    var req = http.request(options, function (res) {
       res.setEncoding('utf8')
 
       res.on('data', function (chunk) {
