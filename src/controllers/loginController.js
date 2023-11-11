@@ -9,7 +9,7 @@ function loginView(req, res) {
 function login(req, res) {
   const data = JSON.stringify({
     email: req.body.email,
-    password: req.body.password,
+    password: req.body.password
   })
 
   const options = {
@@ -20,8 +20,8 @@ function login(req, res) {
     headers: {
       'Content-Type': 'application/json',
       'Content-Length': Buffer.byteLength(data),
-      'X-App-Version': '3.0.2',
-    },
+      'X-App-Version': '3.0.2'
+    }
   }
 
   return _loginRequest(options, data).then(function (b) {
