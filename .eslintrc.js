@@ -1,0 +1,41 @@
+module.exports = {
+  // eslint-configs
+  extends: ['plugin:prettier/recommended'],
+  // eslint-plugins
+  plugins: ['simple-import-sort'],
+  rules: {
+    'class-methods-use-this': 'off',
+    'comma-dangle': ['error', 'never'],
+    'no-extra-boolean-cast': 'error',
+    'no-extra-parens': ['error', 'all'],
+    'no-lone-blocks': 'error',
+    'no-multi-spaces': 'error',
+    'no-new-wrappers': 'error',
+    'no-plusplus': 'off',
+    'no-octal': 'error',
+    'no-redeclare': 'error',
+    'no-return-assign': ['error', 'except-parens'],
+    'no-self-compare': 'error',
+    'no-throw-literal': 'error',
+    'no-unused-expressions': 'error',
+    'no-useless-call': 'error',
+    'no-useless-concat': 'error',
+    'no-useless-escape': 'error',
+    'no-use-before-define': 'off',
+    'no-void': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        arrowParens: 'avoid',
+        printWidth: 100,
+        singleQuote: true,
+        trailingComma: 'all',
+      },
+    ],
+    'quotes': ['error', 'single'],
+    'wrap-iife': ['error', 'inside'],
+    yoda: 'error',
+    radix: 'off',
+    'simple-import-sort/sort': 'error',
+  },
+};
