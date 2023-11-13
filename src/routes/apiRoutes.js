@@ -5,15 +5,7 @@ var express = require( "express" ),
 var router = express.Router();
 
 router.get( "/", loginController.loginView );
-router.post( "/login", function( req, res ) {
-  loginController.login( req, res )
-    .then( result => { 
-      res.status( 200 ).json({ success: true, data: result });
-    })
-    .catch(() => {
-      res.status( 500 ).json({ success: false, error: "Internal Server Error" });
-    });
-});
+router.post( "/login", loginController.login );
 router.get( "/messaging", messagingController.messagingView );
 router.post( "/send-message", messagingController.sendMessage );
 

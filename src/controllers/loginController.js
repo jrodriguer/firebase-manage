@@ -4,7 +4,7 @@ function loginView( req, res ) {
   res.render( "login" );
 }
 
-function login( res, req ) {
+function login( req, res ) {
   var data = JSON.stringify({ email: req.body.email, password: req.body.password });
 
   var options = {
@@ -15,43 +15,36 @@ function login( res, req ) {
     headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength( data ) }
   };
 
-  return new Promise( function( resolve, reject ) {
+  var request = https.request( options, function( response ) {
     var responseBody = "";
-    var req = https.request( options, function( res ) {
-      if( res.statusCode < 200 || res.statusCode > 299 ) {
-        return reject( new Error( "HTTP status code " + res.statusCode ));
+    response.setEncoding( "utf8" );
+
+    response.on( "data", function( chunk ) {
+      responseBody += chunk;
+    });
+
+    response.on( "end", function() {
+      if ( response.statusCode >= 200 && response.statusCode < 300 ) {
+        try {
+          var parsedResponse = JSON.parse( responseBody );
+          res.status( response.statusCode ).json( parsedResponse );
+        }
+        catch ( err ) {
+          res.status( 500 ).json({ error: "Failed to parse JSON response" });
+        }
+      } 
+      else {
+        res.status( response.statusCode ).json({ error: "Request failed" });
       }
-
-      res.setEncoding( "utf8" );
-
-      res.on( "data", function( chunk ) {
-        responseBody += chunk;
-      });
-
-      res.on( "end", function() {
-        var resString = Buffer.concat( responseBody ).toString();
-        resolve( resString );
-        // if (res.statusCode >= 200 && res.statusCode < 300) {
-        //   try {
-        //     resolve(JSON.parse(responseBody))
-        //   } catch (error) {
-        //     reject(new Error('Failed to parse JSON response'))
-        //   }
-        // } else {
-        //   reject(
-        //     new Error('Request failed with status code: ' + res.statusCode)
-        //   )
-        // }
-      });
     });
-
-    req.on( "error", function( err ) {
-      reject( err );
-    });
-
-    req.write( data );
-    req.end();
   });
+
+  request.on( "error", function( err ) {
+    res.status( 500 ).json({ error: err.message });
+  });
+
+  request.write( data );
+  request.end();
 }
 
 module.exports = { loginView: loginView, login: login };
