@@ -9,7 +9,7 @@ router.post('/login', async function (req, res) {
   try {
     const result = await loginController.login(req, res);
   } catch (err) {
-    res.status(500).json({ success: false, error: err });
+    res.status(500).json({ success: false, error: 'Internal Server Error:' });
   }
 });
 router.get('/messaging', messagingController.messagingView)

@@ -29,7 +29,7 @@ function login(req, res) {
 
     var req = http.request(options, function (res) {
       if (res.statusCode < 200 || res.statusCode > 299) {
-        return reject(new Error('HTTP status code' + res.statusCode))
+        return reject(new Error('HTTP status code ' + res.statusCode))
       }
 
       res.setEncoding('utf8')
