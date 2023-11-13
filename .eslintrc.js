@@ -42,7 +42,15 @@ module.exports = {
     "object-curly-newline": [ "error", { "minProperties": 3 }],
     "padded-blocks": [ "error", "never" ],
     "keyword-spacing": [ "error", { after: false, "overrides": { 
-      "return": { "after": true }, "throw": { "after": true }, "case": { "after": true } 
+      "if": { "after": true }, 
+      "else": { "after": true }, 
+      "throw": { "after": true }, 
+      "try": { "after": true }, 
+      "catch": { "after": true }, 
+      "case": { "after": true },
+      "while": { "after": false },
+      "static": { "after": false },
+      "as": { "after": false }
     } }],
     radix: "off",
     "semi": [ "error", "always" ],
