@@ -47,7 +47,7 @@ module.exports = {
     radix: "off",
     "semi": [ "error", "always" ],
     "space-before-function-paren": [ "error", "never" ],
-    "space-in-parens": [ "error", "always", { "exceptions": [ "empty", "()" ] }],
+    "space-in-parens": [ "error", "always", { "exceptions": [ "empty", "{}", "()" ] }],
     "space-infix-ops": "error",
     "switch-colon-spacing": [ "error", { "after": true, "before": false }],
     "quotes": [ "error", "double" ],
