@@ -7,8 +7,10 @@ var router = express.Router();
 
 router.get( "/", loginController.loginView );
 router.post( "/login", loginController.login );
+
 router.get( "/messaging", messagingController.messagingView );
 router.post( "/send-message", messagingController.sendMessage );
-router.post( "/translations", translationController.translationView );
+
+router.post( "/translation", translationController.translationView );
 
 module.exports = router;
