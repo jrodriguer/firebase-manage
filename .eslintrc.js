@@ -19,7 +19,7 @@ module.exports = {
     "comma-spacing": [ "error", { "before": false, "after": true }],
     "computed-property-spacing": [ "error", "never" ],
     "curly": [ "error" ],
-    "dot-location": [ "error", "object" ],
+    "dot-location": [ "error", "property" ],
     "eol-last": [ "error", "always" ],
     "indent": [ "error", 2 ],
     "linebreak-style": [ "error", "unix" ],
