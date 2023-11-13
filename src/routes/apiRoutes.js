@@ -5,7 +5,13 @@ var express = require('express'),
 var router = express.Router()
 
 router.get('/', loginController.loginView)
-router.post('/login', loginController.login)
+router.post('/login', async function (req, res) {
+  try {
+    const result = await loginController.login(req, res);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err });
+  }
+});
 router.get('/messaging', messagingController.messagingView)
 router.post('/send-message', messagingController.sendMessage)
 

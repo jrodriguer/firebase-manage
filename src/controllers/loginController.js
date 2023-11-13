@@ -24,16 +24,14 @@ function login(req, res) {
     }
   }
 
-  return _loginRequest(options, data).then(function (b) {
-    return JSON.parse(b)
-  })
-}
-
-function _loginRequest(options, data) {
   return new Promise(function (resolve, reject) {
     var responseBody = ''
 
     var req = http.request(options, function (res) {
+      if (res.statusCode < 200 || res.statusCode > 299) {
+        return reject(new Error(`HTTP status code ${res.statusCode}`))
+      }
+
       res.setEncoding('utf8')
 
       res.on('data', function (chunk) {
@@ -41,17 +39,19 @@ function _loginRequest(options, data) {
       })
 
       res.on('end', function () {
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          try {
-            resolve(JSON.parse(responseBody))
-          } catch (error) {
-            reject(new Error('Failed to parse JSON response'))
-          }
-        } else {
-          reject(
-            new Error('Request failed with status code: ' + res.statusCode)
-          )
-        }
+        const resString = Buffer.concat(body).toString()
+        resolve(resString)
+        // if (res.statusCode >= 200 && res.statusCode < 300) {
+        //   try {
+        //     resolve(JSON.parse(responseBody))
+        //   } catch (error) {
+        //     reject(new Error('Failed to parse JSON response'))
+        //   }
+        // } else {
+        //   reject(
+        //     new Error('Request failed with status code: ' + res.statusCode)
+        //   )
+        // }
       })
     })
 
