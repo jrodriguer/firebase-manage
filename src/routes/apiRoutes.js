@@ -11,6 +11,6 @@ router.post( "/login", loginController.login );
 router.get( "/messaging", messagingController.messagingView );
 router.post( "/send-message", messagingController.sendMessage );
 
-router.post( "/translation", translationController.translationView );
+router.get( "/translation", translationController.translationView );
 
 module.exports = router;
