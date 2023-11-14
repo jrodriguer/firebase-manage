@@ -6,7 +6,7 @@ html
     link(rel="stylesheet" href="/stylesheets/style.css")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400")
   body
-    form(id="msform" role="form" action="/publish-template" method="POST", enctype="multipart/form-data")
+    form.msform(role="form" action="/publish-template" method="POST", enctype="multipart/form-data")
       fieldset
         h2.msform__title Translations 
         h3.msform__subtitle Manage translations with Firebase Remote Config.
@@ -21,7 +21,7 @@ html
             a.btn(href="/download-template")
           .grid__lcol(id="expand-row")
             label(for="uploads") Upload file (JSON)
-            input(type="file" name="publish" id="uploads" accept=".json" multiple)
+            input(type="file" name="publish" id="uploads" accept=".json")
         input.submit(type="submit" name="submit" placeholder="Submit")
         br
-        a.router(href="/") To back, manage messaging.
+        a.msform__nav(href="/") To back, manage messaging.
