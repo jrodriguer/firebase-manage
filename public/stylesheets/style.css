@@ -43,7 +43,7 @@ body {
 }
 
 .msform__title {
-  font-size: 15px;
+  font-size: 16px;
   text-transform: uppercase;
   color: #2c3e50;
   margin-bottom: 10px;
@@ -51,7 +51,7 @@ body {
 
 .msform__subtitle {
   font-weight: normal;
-  font-size: 13px;
+  font-size: 14px;
   color: #666;
   margin-bottom: 20px;
 }
@@ -109,9 +109,9 @@ body {
 }
 
 .grid__lcol {
-  font-size: 13px;
+  font-size: 14px;
   text-align: start;
-}
+4}
 
 .grid__rcol {
   display: flex;
