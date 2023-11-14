@@ -1,0 +1,39 @@
+{
+  "conditions": [
+    {
+      "name": "For English Android Users",
+      "expression": "device.os == 'android' && device.language in ['en']",
+      "tagColor": "GREEN"
+    }
+  ],
+  "parameters": {
+    "welcome_message": {
+      "defaultValue": {
+        "value": "Welcome to this sample app"
+      },
+      "conditionalValues": {
+        "For English Android Users": {
+          "value": "Welcome to this sample iOS app"
+        }
+      }
+    },
+    "welcome_message_caps": {
+      "defaultValue": {
+        "value": "false"
+      }
+    },
+    "header_text": {
+      "defaultValue": {
+        "useInAppDefault": true
+      }
+    }
+  },
+  "version": {
+    "versionNumber": "4",
+    "updateUser": {
+      "email": "juliorodriguezramirez@gmail.com"
+    },
+    "updateOrigin": "CONSOLE",
+    "updateType": "INCREMENTAL_UPDATE"
+  }
+}
