@@ -22,6 +22,12 @@ html
           .grid__lcol(id="expand-row")
             label(for="uploads") Upload file (JSON)
             input(type="file" name="publish" id="uploads" accept=".json")
+        p.msform__text If you want to add a new condition and parameter to the current template, fill out the following fields:
+        input(type="text" name="name" placeholder="Name condition")
+        input(type="text" name="expression" placeholder="Expression condition" )
+        input(type="text" name="parameter" placeholder="Parameter to set")
+        input(type="text" name="defaultValue" placeholder="Default value")
+        input(type="text" name="conditionalValue" placeholder="Condition value")
         input.submit(type="submit" name="submit" placeholder="Submit")
         br
         a.msform__nav(href="/") To back, manage messaging.

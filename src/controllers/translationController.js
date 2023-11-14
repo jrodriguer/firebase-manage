@@ -71,9 +71,6 @@ function publishTemplate( req, res, next ) {
       }
 
       var fileContent = fs.readFileSync( req.file.path, "UTF8" );
-      // var parseJSON = JSON.parse( fileContent );
-      // for( var i = 0; i < parseJSON.length; i++ ) {
-      // }
       template = config.createTemplateFromJSON( fileContent );
 
       validateTemplate( template )
@@ -83,9 +80,9 @@ function publishTemplate( req, res, next ) {
           }
           return config.publishTemplate( template );
         })
-        .then( function( updatedTemplate ) {
+        .then( function( publication ) {
           console.log( "Template has been published" );
-          console.log( "ETag from server: " + updatedTemplate.etag );
+          console.log( "ETag from server: " + publication.etag );
           res.status( 200 ).send( "Template has been published" );
         })
         .catch( function( err ) {
@@ -99,9 +96,51 @@ function publishTemplate( req, res, next ) {
   }
 }
 
+function getAndUpdateTemplate( req, res, next ) {
+  var { 
+    name, 
+    expression,
+    parameter,
+    defaultValue,
+    conditionalValue 
+  } = req.body;
+
+  try {
+    var template = config.getTemplate();
+    template.conditions.push({
+      name: name, 
+      expression: expression,
+      tagColor: "BLUE"
+    });
+    template.parameters[parameter] = { defaultValue: { value: defaultValue },
+      conditionalValues: { name: { value: conditionalValue } } };
+
+    validateTemplate( template )
+      .then( function( isValid ) {
+        if ( !isValid ) {
+          throw new Error( "Template is invalid" );
+        }
+        return config.publishTemplate( template );
+      })
+      .then( function( updatedTemplate ) {
+        console.log( "ETag from server: " + updatedTemplate.etag );
+        res.status( 200 ).send( "Template update published" );
+      })
+      .catch( function( err ) {
+        console.error( "Failed to publish the update template: ", err );
+        next( err );
+      });
+  }
+  catch ( err ) {
+    console.error( "Unable to get and update template." );
+    return next( new Error( err ));
+  }
+}
+
 module.exports = { 
   translationView: translationView, 
   downloadTemplate: downloadTemplate,
   listVersions: listVersions,
-  publishTemplate: publishTemplate
+  publishTemplate: publishTemplate,
+  getAndUpdateTemplate: getAndUpdateTemplate
 };
