@@ -3,7 +3,9 @@ var admin = require( "firebase-admin" ),
   fs = require( "fs" );
 
 var config = admin.remoteConfig();
-var upload = multer({ dest: "uploads/" });
+var upload = multer({ 
+  dest: "uploads/" 
+});
 
 function translationView( req, res ) {
   res.render( "translation" );
@@ -97,30 +99,40 @@ function publishTemplate( req, res, next ) {
 }
 
 function getAndUpdateTemplate( req, res, next ) {
-  var { 
-    name, 
+  var { name, 
     expression,
     parameter,
     defaultValue,
-    conditionalValue 
-  } = req.body;
+    conditionalValue } = req.body;
+
+  console.log( req.body );
 
   try {
-    var template = config.getTemplate();
-    template.conditions.push({
-      name: name, 
-      expression: expression,
-      tagColor: "BLUE"
-    });
-    template.parameters[parameter] = { defaultValue: { value: defaultValue },
-      conditionalValues: { name: { value: conditionalValue } } };
+    config.getTemplate()
+      .then( function( template ) {
+        template.conditions.push({
+          name: name, 
+          expression: expression,
+          tagColor: "BLUE"
+        });
+        template.parameters[parameter] = { 
+          defaultValue: { 
+            value: defaultValue 
+          },
+          conditionalValues: { 
+            name: { 
+              value: conditionalValue 
+            } 
+          } 
+        };
 
-    validateTemplate( template )
-      .then( function( isValid ) {
-        if ( !isValid ) {
-          throw new Error( "Template is invalid" );
-        }
-        return config.publishTemplate( template );
+        return validateTemplate( template )
+          .then( function( isValid ) {
+            if ( !isValid ) {
+              throw new Error( "Template is invalid" );
+            }
+            return config.publishTemplate( template );
+          });
       })
       .then( function( updatedTemplate ) {
         console.log( "ETag from server: " + updatedTemplate.etag );
