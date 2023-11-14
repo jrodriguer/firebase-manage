@@ -42,6 +42,7 @@ module.exports = {
     "object-curly-newline": [ "error", { "minProperties": 3 }],
     "padded-blocks": [ "error", "never" ],
     "keyword-spacing": [ "error", { after: false, "overrides": { 
+      "var": { "after": true }, 
       "if": { "after": true }, 
       "else": { "after": true }, 
       "throw": { "after": true }, 
