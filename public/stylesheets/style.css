@@ -56,6 +56,12 @@ body {
   margin-bottom: 20px;
 }
 
+.msform__text {
+  text-align: left;
+  font-size: 13px;
+  margin: 10px 0 10px;
+}
+
 .msform input,
 .msform textarea {
   padding: 15px;
@@ -109,9 +115,9 @@ body {
 }
 
 .grid__lcol {
-  font-size: 14px;
+  font-size: 13px;
   text-align: start;
-4}
+}
 
 .grid__rcol {
   display: flex;
