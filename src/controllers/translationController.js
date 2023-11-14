@@ -120,7 +120,7 @@ function getAndUpdateTemplate( req, res, next ) {
             value: defaultValue 
           },
           conditionalValues: { 
-            name: { 
+            [name]: { 
               value: conditionalValue 
             } 
           } 
