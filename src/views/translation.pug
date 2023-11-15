@@ -6,7 +6,7 @@ html
     link(rel="stylesheet" href="/stylesheets/style.css")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400")
   body
-    form.msform(role="form" action="/update-template" method="POST")
+    form.msform(role="form" action="/update-template" method="POST", enctype="multipart/form-data")
       fieldset
         h2.msform__title Translations 
         h3.msform__subtitle Manage translations with Firebase Remote Config.
@@ -22,6 +22,7 @@ html
           .grid__lcol(id="expand-row")
             label(for="uploads") Upload file (JSON)
             input(type="file" name="publish" id="uploads" accept=".json")
+            button(type="submit" formaction="/publish-template", enctype="multipart/form-data") Upload and Publish
         p.msform__text If you want to add a new condition and parameter to the current template, fill out the following fields:
         input(type="text" name="name" placeholder="Name condition")
         input(type="text" name="expression" placeholder="Expression condition" )
