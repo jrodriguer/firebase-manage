@@ -7,33 +7,24 @@
     }
   ],
   "parameters": {
-    "welcome_message": {
+    "publish": {
       "defaultValue": {
-        "value": "Welcome to this sample app"
+        "value": "Testing publish"
       },
       "conditionalValues": {
         "For English Android Users": {
-          "value": "Welcome to this sample iOS app"
+          "value": "Testing publish"
         }
-      }
-    },
-    "welcome_message_caps": {
-      "defaultValue": {
-        "value": "false"
-      }
-    },
-    "header_text": {
-      "defaultValue": {
-        "useInAppDefault": true
       }
     }
   },
   "version": {
-    "versionNumber": "4",
+    "versionNumber": "6",
+    "updateTime": "2023-11-16T15:53:30.574106Z",
     "updateUser": {
       "email": "juliorodriguezramirez@gmail.com"
     },
-    "updateOrigin": "CONSOLE",
+    "updateOrigin": "ADMIN_SDK_NODE",
     "updateType": "INCREMENTAL_UPDATE"
   }
 }
