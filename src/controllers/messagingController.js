@@ -1,29 +1,33 @@
-var admin = require('../firebaseAdmin'),
-  FCMMessage = require('../models/FCMMessage')
+var admin = require( "../firebaseAdmin" ),
+  FCMMessage = require( "../models/FCMMessage" );
 
-function messagingView(req, res) {
-  res.render('messaging')
+function messagingView( req, res ) {
+  res.render( "messaging" );
 }
 
-function sendMessage(req, res) {
+function sendMessage( req, res ) {
   var token = req.body.token,
     title = req.body.title,
-    body = req.body.body
-  var fcmMessage = FCMMessage.call(token, title, body)
-  var message = fcmMessage.buildMessage()
+    body = req.body.body;
+  var fcmMessage = FCMMessage.call( token, title, body );
+  var message = fcmMessage.buildMessage();
 
   admin
     .messaging()
-    .send(message)
-    .then(function (response) {
-      res.status(200).json({ message: 'Message sent successfully' })
+    .send( message )
+    .then( function( response ) {
+      res.status( 200 ).json({ 
+        message: "Message sent successfully" 
+      });
     })
-    .catch(function (error) {
-      res.status(500).json({ error: 'Failed to send message' })
-    })
+    .catch( function( error ) {
+      res.status( 500 ).json({ 
+        error: "Failed to send message" 
+      });
+    });
 }
 
 module.exports = {
   messagingView: messagingView,
   sendMessage: sendMessage
-}
+};
