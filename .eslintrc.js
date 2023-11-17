@@ -1,15 +1,18 @@
 module.exports = {
-  env: {
-    browser: true,
-    "commonjs": true,
-    es6: true 
+  "env": {
+    "browser": true,
+    "node": true
   },
-  extends: [ "eslint:recommended" ],
-  globals: { 
-    Atomics: "readonly", 
-    SharedArrayBuffer: "readonly" 
+  "extends": [ "eslint:recommended" ],
+  "globals": { 
+    "Atomics": "readonly", 
+    "SharedArrayBuffer": "readonly" 
   },
-  rules: {
+  "parserOptions": { 
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
     "array-bracket-newline": [ "error", "consistent" ],
     "array-bracket-spacing": [ "error", "always", { 
       "singleValue": true, 
