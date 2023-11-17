@@ -56,6 +56,9 @@ module.exports = {
     "padded-blocks": [ "error", "never" ],
     "keyword-spacing": [ "error", { 
       after: false, "overrides": { 
+        "return": { 
+          "after": true 
+        }, 
         "var": { 
           "after": true 
         }, 
