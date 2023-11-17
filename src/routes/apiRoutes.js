@@ -15,6 +15,6 @@ router.get( "/translation", translationController.translationView );
 router.get( "/download-template", translationController.downloadTemplate );
 router.get( "/list-versions", translationController.listVersions );
 router.post( "/publish-template", translationController.publishTemplate );
-router.post( "/update-template", translationController.getAndUpdateTemplate );
+router.put( "/update-template", translationController.getAndUpdateTemplate );
 
 module.exports = router;

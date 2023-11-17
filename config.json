@@ -17,14 +17,5 @@
         }
       }
     }
-  },
-  "version": {
-    "versionNumber": "6",
-    "updateTime": "2023-11-16T15:53:30.574106Z",
-    "updateUser": {
-      "email": "juliorodriguezramirez@gmail.com"
-    },
-    "updateOrigin": "ADMIN_SDK_NODE",
-    "updateType": "INCREMENTAL_UPDATE"
   }
 }
