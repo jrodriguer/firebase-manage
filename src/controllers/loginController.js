@@ -1,18 +1,21 @@
 var https = require( "https" );
-
 function loginView( req, res ) {
   res.render( "login" );
 }
 
 function login( req, res ) {
-  var data = JSON.stringify({ email: req.body.email, password: req.body.password });
+  var data = JSON.stringify({ 
+    email: req.body.email, password: req.body.password 
+  });
 
   var options = {
     hostname: "backend-dehesa.wenea.site",
     port: 443,
     path: "/api/v7/user/login",
     method: "POST",
-    headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength( data ) }
+    headers: { 
+      "Content-Type": "application/json", "Content-Length": Buffer.byteLength( data ) 
+    }
   };
 
   var request = https.request( options, function( response ) {
@@ -30,21 +33,29 @@ function login( req, res ) {
           res.status( response.statusCode ).json( parsedResponse );
         }
         catch ( err ) {
-          res.status( 500 ).json({ error: "Failed to parse JSON response" });
+          res.status( 500 ).json({ 
+            error: "Failed to parse JSON response" 
+          });
         }
       } 
       else {
-        res.status( response.statusCode ).json({ error: "Request failed" });
+        res.status( response.statusCode ).json({ 
+          error: "Request failed" 
+        });
       }
     });
   });
 
   request.on( "error", function( err ) {
-    res.status( 500 ).json({ error: err.message });
+    res.status( 500 ).json({ 
+      error: err.message 
+    });
   });
 
   request.write( data );
   request.end();
 }
 
-module.exports = { loginView: loginView, login: login };
+module.exports = { 
+  loginView: loginView, login: login 
+};
