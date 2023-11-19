@@ -1,12 +1,10 @@
 {
   "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "entry",
-        "corejs": "3.22"
+    ["@babel/preset-env", {
+      "targets": {
+        "node": "current"
       }
-    ]
+    }]
   ],
   "plugins": [
     "@babel/plugin-syntax-class-properties"
