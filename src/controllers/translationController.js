@@ -45,6 +45,22 @@ function listVersions( req, res, next ) {
     });
 }
 
+function _validateTemplate( template ) {
+  return new Promise( function( resolve, reject ) {
+    config
+      .validateTemplate( template )
+      .then( function() {
+        console.log( "Template was valid and safe to use" );
+        resolve( true );
+      })
+      .catch( function( err ) {
+        console.error( "Template is invalid and cannot be published" );
+        console.error( err );
+        resolve( false );
+      });
+  });
+}
+
 function getAndUpdateTemplate( req, res, next ) {
   var { name, 
     expression,
@@ -73,7 +89,7 @@ function getAndUpdateTemplate( req, res, next ) {
           } 
         };
 
-        return validateTemplate( template )
+        return _validateTemplate( template )
           .then( function( isValid ) {
             if ( !isValid ) {
               throw new Error( "Template is invalid" );
@@ -94,62 +110,6 @@ function getAndUpdateTemplate( req, res, next ) {
     console.error( "Unable to get and update template." );
     return next( new Error( err ));
   }
-}
-
-function _validateTemplate( template ) {
-  return new Promise( function( resolve, reject ) {
-    config
-      .validateTemplate( template )
-      .then( function() {
-        console.log( "Template was valid and safe to use" );
-        resolve( true );
-      })
-      .catch( function( err ) {
-        console.error( "Template is invalid and cannot be published" );
-        console.error( err );
-        resolve( false );
-      });
-  });
-}
-
-function _validateInputRemoteConfigTemplate( template ) {
-  var templateCopy = deepCopy( template );
-  if ( !validator.isNonNullObject( templateCopy )) {
-    throw new FirebaseRemoteConfigError(
-      "invalid-argument",
-      "Invalid Remote Config template: " + JSON.stringify( templateCopy )
-    );
-  }
-  if ( !validator.isNonEmptyString( templateCopy.etag )) {
-    throw new FirebaseRemoteConfigError(
-      "invalid-argument",
-      "ETag must be a non-empty string."
-    );
-  }
-  if ( !validator.isNonNullObject( templateCopy.parameters )) {
-    throw new FirebaseRemoteConfigError(
-      "invalid-argument",
-      "Remote Config parameters must be a non-null object" 
-    );
-  }
-  if ( !validator.isNonNullObject( templateCopy.parameterGroups )) {
-    throw new FirebaseRemoteConfigError(
-      "invalid-argument",
-      "Remote Config parameter groups must be a non-null object"
-    );
-  }
-  if ( !validator.isArray( templateCopy.conditions )) {
-    throw new FirebaseRemoteConfigError(
-      "invalid-argument",
-      "Remote Config conditions must be an array" 
-    );
-  }
-  if ( typeof templateCopy.version !== "undefined" ) {
-    templateCopy.version = { 
-      description: templateCopy.version.description 
-    };
-  }
-  return templateCopy;
 }
 
 function publishTemplate( req, res, next ) {
