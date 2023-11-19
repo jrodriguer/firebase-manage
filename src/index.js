@@ -6,7 +6,7 @@ var bodyParser = require( "body-parser" ),
 var app = express();
 
 app.set( "view engine", "pug" );
-app.set( "views", join(__dirname, "views" ));
+app.set( "views", join( __dirname, "views" ));
 
 app.use( bodyParser.json());
 app.use( express.urlencoded({
