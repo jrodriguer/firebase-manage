@@ -1,9 +1,9 @@
-var bodyParser = require( "body-parser" ),
-  express = require( "express" ),
-  join = require( "path" ).join,
-  apiRoutes = require( "./routes/apiRoutes" );
+const bodyParser = require( "body-parser" );
+const express = require( "express" );
+const join = require( "path" ).join;
+const apiRoutes = require( "./routes/apiRoutes" );
 
-var app = express();
+const app = express();
 
 app.set( "view engine", "pug" );
 app.set( "views", join( __dirname, "views" ));
@@ -22,7 +22,7 @@ app.use( function( req, res, next ) {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization, Content-Length, X-Requested-With"
   );
-  // allow preflight
+
   if ( req.method === "OPTIONS" ) {
     res.send( 200 );
   } 
@@ -32,8 +32,21 @@ app.use( function( req, res, next ) {
 });
 
 app.use( express.static( "public" ));
-
 app.use( "/", apiRoutes );
+
+app.use(( error, req, res, next ) => {
+  if ( res.headersSent ) {
+    return next( error );
+  }
+
+  // To default 500 Internal Server Error.
+  res.status( error.status || 500 );
+  res.json({ 
+    status: error.status,
+    message: error.message,
+    stack: error.stack
+  });
+});
 
 var PORT = process.env.PORT || 3000;
 
