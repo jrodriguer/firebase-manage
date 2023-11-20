@@ -20,7 +20,7 @@ module.exports = {
       "objectsInArrays": false,
       "arraysInArrays": false
     }],
-    "arrow-parens": [ "error", "as-needed" ],
+    "arrow-parens": [ "error", "always" ],
     "brace-style": [ "error", "stroustrup" ],
     "comma-dangle": [ "error", "never" ],
     "comma-spacing": [ "error", { 
@@ -109,6 +109,6 @@ module.exports = {
     "key-spacing": [ "error", { 
       "mode": "strict" 
     }],
-    yoda: "error"
+    yoda: "error",
   }
 };
