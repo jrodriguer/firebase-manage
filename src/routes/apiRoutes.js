@@ -1,9 +1,9 @@
-var express = require( "express" ),
-  messagingController = require( "../controllers/messagingController" ),
-  loginController = require( "../controllers/loginController" ),
-  translationController = require( "../controllers/translationController" );
+const express = require( "express" );
+const messagingController = require( "../controllers/messagingController" );
+const loginController = require( "../controllers/loginController" );
+const translationController = require( "../controllers/translationController" );
 
-var router = express.Router();
+const router = express.Router();
 
 router.get( "/", loginController.loginView );
 router.post( "/login", loginController.login );
