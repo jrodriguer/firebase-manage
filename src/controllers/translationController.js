@@ -11,24 +11,24 @@ const upload = multer({
   dest: "uploads/" 
 });
 
-function translationView( req, res ) {
+export function translationView( req, res ) {
   res.render( "translation" );
 }
 
-function listVersions( req, res, next ) {
+export function listVersions( req, res, next ) {
   admin
     .remoteConfig()
     .listVersions()
     .then(( listVersionsResult ) => {
       var versions = [];
-      listVersionsResult.versions.forEach( function( version ) {
+      listVersionsResult.versions.forEach(( version ) => {
         versions.push( version );
       });
       res.send( versions );
     }, next );
 }
 
-function downloadTemplate( req, res, next ) {
+export function downloadTemplate( req, res, next ) {
   admin
     .remoteConfig()
     .getTemplate()
@@ -39,20 +39,7 @@ function downloadTemplate( req, res, next ) {
     }, next );
 }
 
-function _validateTemplate( template ) {
-  return new Promise(( resolve, reject ) => {
-    config 
-      .validateTemplate( template )
-      .then(() => {
-        resolve( true );
-      })
-      .catch(( err ) => {
-        resolve( false );
-      });
-  });
-}
-
-function _validateInputRemoteConfigTemplate( template ) {
+function validateInputRemoteConfigTemplate( template ) {
   // The object must have valid parameters, parameter groups, conditions, and an etag.
   const templateCopy = structuredClone( template );
   if ( !validator.isNonNullObject( templateCopy )) {
@@ -80,7 +67,7 @@ function _validateInputRemoteConfigTemplate( template ) {
   return templateCopy;
 }
 
-async function getAndUpdateTemplate( req, res, next ) {
+export async function getAndUpdateTemplate( req, res, next ) {
   let { name, 
     expression,
     parameter,
@@ -105,7 +92,7 @@ async function getAndUpdateTemplate( req, res, next ) {
       } 
     };
 
-    let isValid = await _validateInputRemoteConfigTemplate( template );
+    let isValid = await validateInputRemoteConfigTemplate( template );
     if ( !isValid ) {
       // TODO: We define a custom class that extends Error to represent the 400 Bad Request error.
       throw new Error( "Template is invalid." );
@@ -121,7 +108,7 @@ async function getAndUpdateTemplate( req, res, next ) {
   }
 }
 
-async function publishTemplate( req, res, next ) {
+export async function publishTemplate( req, res, next ) {
   try {
     await new Promise(( resolve, reject ) => {
       upload.single( "publish" )( req, res, ( err ) => {
@@ -140,7 +127,7 @@ async function publishTemplate( req, res, next ) {
 
     // TODO: Bad validation, udpate for "step to step" validator. 
     try {
-      template = _validateInputRemoteConfigTemplate( template );
+      template = validateInputRemoteConfigTemplate( template );
     }
     catch ( err ) {
       throw new FirebaseRemoteConfigError( err.message );
@@ -222,11 +209,3 @@ class FirebaseRemoteConfigError extends Error {
     this.status = 400;
   }
 }
-
-module.exports = { 
-  translationView: translationView, 
-  downloadTemplate: downloadTemplate,
-  listVersions: listVersions,
-  publishTemplate: publishTemplate,
-  getAndUpdateTemplate: getAndUpdateTemplate
-};
