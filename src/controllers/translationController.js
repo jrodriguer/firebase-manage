@@ -143,65 +143,6 @@ export async function publishTemplate( req, res, next ) {
   }
 }
 
-function _sendPutRequest( template, etag, validateOnly ) {
-  var path = "remoteConfig";
-  if ( validateOnly ) {
-    path += "?validate_only=true";
-  }
-
-  var data = {
-    conditions: template.conditions,
-    parameters: template.parameters,
-    parameterGroups: template.parameterGroups,
-    version: template.version
-  };
-
-  var options = {
-    hostname: "firebaseremoteconfig.googleapis.com",
-    port: 443,
-    path: "/v1/projects/flutter-news-app-6a808/" + path,
-    method: "POST",
-    headers: { 
-      "Content-Type": "application/json; UTF8",
-      "X-Firebase-Client": "firebase-manage/1.0.0",
-      "Accept-Encoding": "gzip",
-      "If-Match": etag
-    }
-  };
-
-  return new Promise(( resolve, reject ) => {
-    var req = https.request( options, ( res ) => {
-      if ( res.statusCode < 200 || res.statusCode > 299 ) {
-        return reject( new Error( "HTTP status code " + res.statusCode ));
-      }
-
-      const body = [];
-
-      res.on( "data", ( chunk ) => {
-        console.log( "Chunk data firebase remote config" );
-        body.push( chunk );
-      });
-
-      res.on( "end", () => {
-        const resString = Buffer.concat( body ).toString();
-        resolve( resString );
-      });
-    });
-
-    req.on( "error", ( err ) => {
-      reject( err );
-    });
-
-    req.on( "timeout", () => {
-      req.destroy();
-      reject( new Error( "req time out" ));
-    });
-
-    req.write( JSON.stringify( data ));
-    req.end(); 
-  });
-}
-
 class FirebaseRemoteConfigError extends Error {
   constructor( message ) {
     super( message );
