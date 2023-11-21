@@ -4,6 +4,7 @@ const https = require( "https" );
 const multer = require( "multer" );
 const util = require( "util" );
 const readFile = util.promisify( fs.readFile );
+const validator = require( "../utils/validator.js" );
 
 const config = admin.remoteConfig();
 const upload = multer({ 
@@ -51,6 +52,34 @@ function _validateTemplate( template ) {
   });
 }
 
+function _validateInputRemoteConfigTemplate( template ) {
+  // The object must have valid parameters, parameter groups, conditions, and an etag.
+  const templateCopy = structuredClone( template );
+  if ( !validator.isNonNullObject( templateCopy )) {
+    throw new FirebaseRemoteConfigError( "Invalid Remote Config template" );
+  }
+  if ( !validator.isNonEmptyString( templateCopy.etag )) {
+    throw new FirebaseRemoteConfigError( "ETag must be a non-empty string." );
+  }
+  if ( !validator.isNonNullObject( templateCopy.parameters )) {
+    throw new FirebaseRemoteConfigError( "Remote Config parameters must be a non-null object" );
+  }
+  if ( !validator.isNonNullObject( templateCopy.parameterGroups )) {
+    throw new FirebaseRemoteConfigError( 
+      "Remote Config parameter groups must be a non-null object" 
+    );
+  }
+  if ( !validator.isArray( templateCopy.conditions )) {
+    throw new FirebaseRemoteConfigError( "Remote Config conditions must be an array" );
+  }
+  if ( typeof templateCopy.version !== "undefined" ) {
+    templateCopy.version = { 
+      description: templateCopy.version.description 
+    };
+  }
+  return templateCopy;
+}
+
 async function getAndUpdateTemplate( req, res, next ) {
   let { name, 
     expression,
@@ -76,9 +105,9 @@ async function getAndUpdateTemplate( req, res, next ) {
       } 
     };
 
-    let isValid = await _validateTemplate( template );
+    let isValid = await _validateInputRemoteConfigTemplate( template );
     if ( !isValid ) {
-      // TODO: We define a custom BadRequestError class that extends Error to represent the 400 Bad Request error.
+      // TODO: We define a custom class that extends Error to represent the 400 Bad Request error.
       throw new Error( "Template is invalid." );
     }
 
@@ -110,10 +139,11 @@ async function publishTemplate( req, res, next ) {
     let template = config.createTemplateFromJSON( fileContent );
 
     // TODO: Bad validation, udpate for "step to step" validator. 
-    let isValid = await _validateTemplate( template );
-    if ( !isValid ) {
-      // TODO: We define a custom BadRequestError class that extends Error to represent the 400 Bad Request error.
-      throw new Error( "Template is invalid." );
+    try {
+      template = _validateInputRemoteConfigTemplate( template );
+    }
+    catch ( err ) {
+      throw new FirebaseRemoteConfigError( err.message );
     }
 
     let publishedTemplate = await config.publishTemplate( template );
@@ -183,6 +213,14 @@ function _sendPutRequest( template, etag, validateOnly ) {
     req.write( JSON.stringify( data ));
     req.end(); 
   });
+}
+
+class FirebaseRemoteConfigError extends Error {
+  constructor( message ) {
+    super( message );
+    this.name = "FirebaseRemoteConfigError";
+    this.status = 400;
+  }
 }
 
 module.exports = { 
