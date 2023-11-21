@@ -1,6 +1,5 @@
 const admin = require( "firebase-admin" );
 const fs = require( "fs" );
-const https = require( "https" );
 const multer = require( "multer" );
 const util = require( "util" );
 const readFile = util.promisify( fs.readFile );
