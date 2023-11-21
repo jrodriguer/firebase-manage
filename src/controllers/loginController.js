@@ -1,4 +1,5 @@
-var https = require( "https" );
+const https = require( "https" );
+
 function loginView( req, res ) {
   res.render( "login" );
 }
@@ -14,46 +15,42 @@ function login( req, res ) {
     path: "/api/v7/user/login",
     method: "POST",
     headers: { 
-      "Content-Type": "application/json", "Content-Length": Buffer.byteLength( data ) 
+      "Content-Type": "application/json", 
+      "Content-Length": Buffer.byteLength( data ) 
     }
   };
 
-  var request = https.request( options, function( response ) {
-    var responseBody = "";
-    response.setEncoding( "utf8" );
-
-    response.on( "data", function( chunk ) {
-      responseBody += chunk;
-    });
-
-    response.on( "end", function() {
-      if ( response.statusCode >= 200 && response.statusCode < 300 ) {
-        try {
-          var parsedResponse = JSON.parse( responseBody );
-          res.status( response.statusCode ).json( parsedResponse );
-        }
-        catch ( err ) {
-          res.status( 500 ).json({ 
-            error: "Failed to parse JSON response" 
-          });
-        }
-      } 
-      else {
-        res.status( response.statusCode ).json({ 
-          error: "Request failed" 
-        });
+  return new Promise(( resolve, reject ) => {
+    let req = https.request( options, ( res ) => {
+      if ( res.statusCode < 200 || res.statusCode > 299 ) {
+        return reject( new Error( "HTTP status code " + res.statusCode ));
       }
+
+      const body = [];
+
+      res.on( "data", ( chunk ) => {
+        console.log( "Chunk data firebase remote config" );
+        body.push( chunk );
+      });
+
+      res.on( "end", () => {
+        const resString = Buffer.concat( body ).toString();
+        resolve( resString );
+      });
+
+      req.on( "error", ( err ) => {
+        reject( err );
+      });
+
+      req.on( "timeout", () => {
+        req.destroy();
+        reject( new Error( "req time out" ));
+      });
+
+      req.write( JSON.stringify( data ));
+      req.end(); 
     });
   });
-
-  request.on( "error", function( err ) {
-    res.status( 500 ).json({ 
-      error: err.message 
-    });
-  });
-
-  request.write( data );
-  request.end();
 }
 
 module.exports = { 
