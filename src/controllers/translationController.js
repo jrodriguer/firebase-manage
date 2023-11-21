@@ -90,11 +90,12 @@ export async function getAndUpdateTemplate( req, res, next ) {
         } 
       } 
     };
-
-    let isValid = await validateInputRemoteConfigTemplate( template );
-    if ( !isValid ) {
-      // TODO: We define a custom class that extends Error to represent the 400 Bad Request error.
-      throw new Error( "Template is invalid." );
+    
+    try {
+      template = validateInputRemoteConfigTemplate( template );
+    }
+    catch ( err ) {
+      throw new FirebaseRemoteConfigError( err.message );
     }
 
     let updatedTemplate = await config.publishTemplate( template );
@@ -124,7 +125,6 @@ export async function publishTemplate( req, res, next ) {
     const fileContent = await readFile( req.file.path, "UTF8" );
     let template = config.createTemplateFromJSON( fileContent );
 
-    // TODO: Bad validation, udpate for "step to step" validator. 
     try {
       template = validateInputRemoteConfigTemplate( template );
     }
