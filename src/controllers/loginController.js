@@ -1,41 +1,55 @@
 const https = require( "https" );
 
-function loginView( req, res ) {
+export function loginView( req, res ) {
   res.render( "login" );
 }
 
-function login( req, res ) {
-  var data = JSON.stringify({ 
-    email: req.body.email, password: req.body.password 
-  });
+export async function login( req, res, next ) {
+  try {
+    const requestData = JSON.stringify({ 
+      email: req.body.email, password: req.body.password   
+    });
 
-  var options = {
-    hostname: "backend-dehesa.wenea.site",
-    port: 443,
-    path: "/api/v7/user/login",
-    method: "POST",
-    headers: { 
-      "Content-Type": "application/json", 
-      "Content-Length": Buffer.byteLength( data ) 
-    }
-  };
-
-  return new Promise(( resolve, reject ) => {
-    let req = https.request( options, ( res ) => {
-      if ( res.statusCode < 200 || res.statusCode > 299 ) {
-        return reject( new Error( "HTTP status code " + res.statusCode ));
+    const requestOptions = {
+      hostname: "backend-dehesa.wenea.site",
+      port: 443,
+      path: "/api/v7/user/login/",
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json", 
+        "Content-Length": Buffer.byteLength( requestData ) 
       }
+    };
+    
+    const response = await request(requestData, requestOptions);
+    console.log( response );
+  }
+  catch ( err ) {
+    next( err );
+  }
+}
 
-      const body = [];
+async function request( data, options ) {
+  try {
+    const response = await new Promise(( resolve, reject ) => {
+      let req = https.request( options, ( res ) => {
+        res.setEncoding('utf8');
 
-      res.on( "data", ( chunk ) => {
-        console.log( "Chunk data firebase remote config" );
-        body.push( chunk );
-      });
+        if ( res.statusCode < 200 || res.statusCode > 299 ) {
+          return reject( new Error( "HTTP status code " + res.statusCode ));
+        }
 
-      res.on( "end", () => {
-        const resString = Buffer.concat( body ).toString();
-        resolve( resString );
+        const body = [];
+
+        res.on( "data", ( chunk ) => {
+          console.log( "Chunk data login" );
+          body.push( chunk );
+        });
+
+        res.on( "end", () => {
+          const resString = Buffer.concat( body ).toString();
+          resolve( resString );
+        });
       });
 
       req.on( "error", ( err ) => {
@@ -50,9 +64,10 @@ function login( req, res ) {
       req.write( JSON.stringify( data ));
       req.end(); 
     });
-  });
-}
 
-module.exports = { 
-  loginView: loginView, login: login 
-};
+    return response;
+  }
+  catch ( err ) {
+    throw err;
+  }
+}
