@@ -23,4 +23,20 @@ export class FCMMessage {
 
     return message;
   }
+
+  get token() {
+    return this.token;
+  }
+
+  get title() {
+    return this.title;
+  }
+
+  get body() {
+    return this.body;
+  }
+
+  get topic() {
+    return this.topic;
+  }
 }
