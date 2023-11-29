@@ -1,20 +1,26 @@
-const express = require( "express" );
-const messagingController = require( "../controllers/messagingController" );
-const loginController = require( "../controllers/loginController" );
-const translationController = require( "../controllers/translationController" );
+import * as express from "express";
+import { loginView, login } from "../controllers/loginController";
+import { messagingView, sendMessage } from "../controllers/messagingController";
+import { 
+  translationView,
+  downloadTemplate,
+  listVersions,
+  publishTemplate, 
+  getAndUpdateTemplate 
+} from "../controllers/translationController";
 
 const router = express.Router();
 
-router.get( "/", loginController.loginView );
-router.post( "/login", loginController.login );
+router.get( "/", loginView );
+router.post( "/login", login );
 
-router.get( "/messaging", messagingController.messagingView );
-router.post( "/send-message", messagingController.sendMessage );
+router.get( "/messaging", messagingView );
+router.post( "/send-message", sendMessage );
 
-router.get( "/translations", translationController.translationView );
-router.get( "/download-template", translationController.downloadTemplate );
-router.get( "/list-versions", translationController.listVersions );
-router.post( "/publish-template", translationController.publishTemplate );
-router.put( "/update-template", translationController.getAndUpdateTemplate );
+router.get( "/translations", translationView );
+router.get( "/download-template", downloadTemplate );
+router.get( "/list-versions", listVersions );
+router.post( "/publish-template", publishTemplate );
+router.put( "/update-template", getAndUpdateTemplate );
 
-module.exports = router;
+export default router;

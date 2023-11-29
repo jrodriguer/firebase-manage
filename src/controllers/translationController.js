@@ -1,20 +1,23 @@
-const admin = require( "firebase-admin" );
-const fs = require( "fs" );
-const multer = require( "multer" );
-const util = require( "util" );
-const readFile = util.promisify( fs.readFile );
-const validator = require( "../utils/validator.js" );
+import admin from '../firebaseAdmin';
+import * as validator from "../utils/validator";
+import fs from "fs";
+import multer from "multer";
+import util from "util";
+
+const { promisify } = util;
+const readFile = promisify( fs.readFile );
 
 const config = admin.remoteConfig();
+
 const upload = multer({ 
   dest: "uploads/" 
 });
 
-export function translationView( req, res ) {
+export const translationView = ( req, res ) => {
   res.render( "translation" );
-}
+};
 
-export function listVersions( req, res, next ) {
+export const listVersions = ( req, res, next ) => {
   admin
     .remoteConfig()
     .listVersions()
@@ -25,9 +28,9 @@ export function listVersions( req, res, next ) {
       });
       res.send( versions );
     }, next );
-}
+};
 
-export function downloadTemplate( req, res, next ) {
+export const downloadTemplate = ( req, res, next ) => {
   admin
     .remoteConfig()
     .getTemplate()
@@ -36,9 +39,9 @@ export function downloadTemplate( req, res, next ) {
       res.send( template );
       res.sendStatus( 200 );
     }, next );
-}
+};
 
-function validateInputRemoteConfigTemplate( template ) {
+export const validateInputRemoteConfigTemplate = ( template ) => {
   // The object must have valid parameters, parameter groups, conditions, and an etag.
   const templateCopy = structuredClone( template );
   if ( !validator.isNonNullObject( templateCopy )) {
@@ -66,7 +69,7 @@ function validateInputRemoteConfigTemplate( template ) {
   return templateCopy;
 }
 
-export async function getAndUpdateTemplate( req, res, next ) {
+export const getAndUpdateTemplate = async ( req, res, next ) => {
   let { name, 
     expression,
     parameter,
@@ -108,7 +111,7 @@ export async function getAndUpdateTemplate( req, res, next ) {
   }
 }
 
-export async function publishTemplate( req, res, next ) {
+export const publishTemplate = async ( req, res, next ) => {
   try {
     await new Promise(( resolve, reject ) => {
       upload.single( "publish" )( req, res, ( err ) => {
@@ -140,7 +143,7 @@ export async function publishTemplate( req, res, next ) {
     console.error( "Unable to publish template." );
     next( err );
   }
-}
+};
 
 class FirebaseRemoteConfigError extends Error {
   constructor( message ) {

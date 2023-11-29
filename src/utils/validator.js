@@ -1,64 +1,64 @@
-export function isBuffer( value ) {
+export const isBuffer = ( value ) => { 
   return value instanceof Buffer;
-}
+};
 
-export function isArray( value ) {
+export const isArray = ( value ) => { 
   return Array.isArray( value );
-}
+};
 
-export function isNonEmptyArray( value ) {
+export const isNonEmptyArray = ( value ) => { 
   return isArray( value ) && value.length !== 0;
-}
+};
 
-export function isBoolean( value ) {
+export const isBoolean = ( value ) => { 
   return typeof value === "boolean";
-}
+};
 
-export function isNumber( value ) {
+export const isNumber = ( value ) => { 
   return typeof value === "number" && !isNaN( value );
-}
+};
 
-export function isString( value ) {
+export const isString = ( value ) => { 
   return typeof value === "string";
-}
+};
 
-export function isBase64String( value ) {
+export const isBase64String = ( value ) => { 
   if ( !isString( value )) {
     return false;
   }
   return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test( value );
-}
+};
 
-export function isNonEmptyString( value ) {
+export const isNonEmptyString = ( value ) => { 
   return isString( value ) && value !== "";
-}
+};
 
-export function isObject( value ) {
+export const isObject = ( value ) => { 
   return typeof value === "object" && !isArray( value );
-}
+};
 
-export function isNonNullObject( value ) {
+export const isNonNullObject = ( value ) => { 
   return isObject( value ) && value !== null;
-}
+};
 
-export function isUid( uid ) {
+export const isUid = ( uid ) => {
   return typeof uid === "string" && uid.length > 0 && uid.length <= 128;
-}
+};
 
-export function isPassword( password ) {
+export const isPassword = ( password ) => {
   return typeof password === "string" && password.length >= 6;
-}
+};
 
-export function isEmail( email ) {
+export const isEmail = ( email ) => {
   if ( typeof email !== "string" ) {
     return false;
   }
   // There must at least one character before the @ symbol and another after.
   const re = /^[^@]+@[^@]+$/;
   return re.test( email );
-}
+};
 
-export function isPhoneNumber( phoneNumber ) {
+export const isPhoneNumber = ( phoneNumber ) => {
   if ( typeof phoneNumber !== "string" ) {
     return false;
   }
@@ -69,4 +69,4 @@ export function isPhoneNumber( phoneNumber ) {
   // The phone number string must contain at least one alphanumeric character.
   const re2 = /[\da-zA-Z]+/;
   return re1.test( phoneNumber ) && re2.test( phoneNumber );
-}
+};

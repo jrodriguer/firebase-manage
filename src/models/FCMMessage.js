@@ -1,4 +1,4 @@
-export class FCMMessage {
+export default class FCMMessage {
   constructor( token, title, body, topic ) {
     this.token = token;
     this.title = title;

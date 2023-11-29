@@ -1,17 +1,18 @@
-const bodyParser = require( "body-parser" );
-const express = require( "express" );
-const join = require( "path" ).join;
-const apiRoutes = require( "./routes/apiRoutes" );
+import { urlencoded } from "body-parser";
+import { join } from "path";
+import * as express from "express";
+import apiRoutes from "./routes/apiRoutes";
 
 const app = express();
 
 app.set( "view engine", "pug" );
 app.set( "views", join( __dirname, "views" ));
 
-app.use( bodyParser.urlencoded({
+app.use( urlencoded({
   extended: true 
 }));
 app.use( bodyParser.json());
+
 app.use(( req, res, next ) => {
   res.header( "Access-Control-Allow-Origin", "*" ),
   res.header(
@@ -30,8 +31,10 @@ app.use(( req, res, next ) => {
     next();
   }
 });
+
 app.use( express.static( "public" ));
 app.use( "/", apiRoutes );
+
 app.use(( error, req, res, next ) => {
   if ( res.headersSent ) {
     return next( error );
@@ -45,7 +48,7 @@ app.use(( error, req, res, next ) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.listen( PORT, function() {
   console.log( "Server running at http://localhost:" + PORT );

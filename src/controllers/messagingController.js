@@ -1,11 +1,11 @@
-const admin = require( "../firebaseAdmin" );
-const FCMMessage = require( "../models/FCMMessage" );
+import admin from '../firebaseAdmin';
+import FCMMessage from '../models/FCMMessage';
 
-export function messagingView( req, res ) {
+export const messagingView = ( req, res ) => {
   res.render( "messaging" );
-}
+};
 
-export function sendMessage( req, res ) {
+export const sendMessage = ( req, res ) => {
   const token = req.body.token,
     title = req.body.title,
     body = req.body.body;
@@ -25,5 +25,4 @@ export function sendMessage( req, res ) {
         error: "Failed to send message" 
       });
     });
-}
-
+};

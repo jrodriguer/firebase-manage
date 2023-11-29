@@ -1,17 +1,18 @@
-const https = require( "https" );
+import { https } from "https";
 
-export function loginView( req, res ) {
+export const loginView = ( req, res ) => {
   res.render( "login" );
-}
+};
 
-export async function login( req, res, next ) {
+export const login = async ( req, res, next ) => {
   try {
     const requestData = JSON.stringify({ 
-      email: req.body.email, password: req.body.password   
+      email: req.body.email, 
+      password: req.body.password   
     });
 
     const requestOptions = {
-      hostname: "backend-dehesa.wenea.site",
+      hostname: "backend-des.wenea.site",
       port: 443,
       path: "/api/v7/user/login/",
       method: "POST",
@@ -21,21 +22,21 @@ export async function login( req, res, next ) {
       }
     };
     
-    const response = await request(requestData, requestOptions);
-    console.log( response );
+    const response = await request( requestData, requestOptions );
   }
   catch ( err ) {
     next( err );
   }
-}
+};
 
-async function request( data, options ) {
+const request = async ( data, options ) => {
   try {
     const response = await new Promise(( resolve, reject ) => {
       let req = https.request( options, ( res ) => {
-        res.setEncoding('utf8');
+        res.setEncoding( "utf8" );
 
         if ( res.statusCode < 200 || res.statusCode > 299 ) {
+          // TODO: Handler 400 Error when client try to login.
           return reject( new Error( "HTTP status code " + res.statusCode ));
         }
 
@@ -70,4 +71,4 @@ async function request( data, options ) {
   catch ( err ) {
     throw err;
   }
-}
+};
