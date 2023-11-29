@@ -1,4 +1,4 @@
-import { https } from "https";
+import https from "https";
 
 export const loginView = ( req, res ) => {
   res.render( "login" );

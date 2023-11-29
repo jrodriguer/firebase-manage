@@ -1,13 +1,13 @@
 import * as express from "express";
-import { loginView, login } from "../controllers/loginController";
-import { messagingView, sendMessage } from "../controllers/messagingController";
+import { loginView, login } from "../controllers/loginController.js";
+import { messagingView, sendMessage } from "../controllers/messagingController.js";
 import { 
   translationView,
   downloadTemplate,
   listVersions,
   publishTemplate, 
   getAndUpdateTemplate 
-} from "../controllers/translationController";
+} from "../controllers/translationController.js";
 
 const router = express.Router();
 

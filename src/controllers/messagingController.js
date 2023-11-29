@@ -1,5 +1,5 @@
-import admin from '../firebaseAdmin';
-import FCMMessage from '../models/FCMMessage';
+import admin from '../firebaseAdmin.js';
+import FCMMessage from '../models/FCMMessage.js';
 
 export const messagingView = ( req, res ) => {
   res.render( "messaging" );

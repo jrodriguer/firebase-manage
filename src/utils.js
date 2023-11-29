@@ -1,3 +1,16 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+export const getFilename = ( metaUrl) => {
+  const __filename = fileURLToPath(metaUrl);
+  return __filename;
+}
+
+export const getDirname = (metaUrl) => {
+  const __dirname = path.dirname(getFilename(metaUrl));
+  return __dirname;
+}
+
 export const isBuffer = ( value ) => { 
   return value instanceof Buffer;
 };

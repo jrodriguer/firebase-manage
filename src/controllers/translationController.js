@@ -1,5 +1,5 @@
-import admin from '../firebaseAdmin';
-import * as validator from "../utils/validator";
+import admin from '../firebaseAdmin.js';
+import * as validator from "../utils.js";
 import fs from "fs";
 import multer from "multer";
 import util from "util";

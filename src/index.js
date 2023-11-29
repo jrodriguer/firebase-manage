@@ -1,9 +1,12 @@
-import { urlencoded } from "body-parser";
+import express from "express";
+import parser from "body-parser";
 import { join } from "path";
-import * as express from "express";
-import apiRoutes from "./routes/apiRoutes";
+import { getDirname } from "./utils.js";
+import router from "./routes/apiRoutes.js";
 
 const app = express();
+const { urlencoded } = parser;
+const __dirname = getDirname( import.meta.url );
 
 app.set( "view engine", "pug" );
 app.set( "views", join( __dirname, "views" ));
@@ -11,7 +14,7 @@ app.set( "views", join( __dirname, "views" ));
 app.use( urlencoded({
   extended: true 
 }));
-app.use( bodyParser.json());
+app.use( parser.json());
 
 app.use(( req, res, next ) => {
   res.header( "Access-Control-Allow-Origin", "*" ),
@@ -33,7 +36,7 @@ app.use(( req, res, next ) => {
 });
 
 app.use( express.static( "public" ));
-app.use( "/", apiRoutes );
+app.use( "/", router );
 
 app.use(( error, req, res, next ) => {
   if ( res.headersSent ) {
