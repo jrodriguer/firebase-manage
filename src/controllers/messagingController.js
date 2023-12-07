@@ -1,10 +1,6 @@
 import admin from '../firebaseAdmin.js';
 import FCMMessage from '../models/FCMMessage.js';
 
-export const messagingView = ( req, res ) => {
-  res.render( "messaging" );
-};
-
 export const sendMessage = ( req, res ) => {
   const token = req.body.token,
     title = req.body.title,

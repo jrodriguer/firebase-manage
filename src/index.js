@@ -1,15 +1,9 @@
 import express from "express";
 import parser from "body-parser";
-import { join } from "path";
-import { getDirname } from "./utils.js";
 import router from "./routes/apiRoutes.js";
 
 const app = express();
 const { urlencoded } = parser;
-const __dirname = getDirname( import.meta.url );
-
-app.set( "view engine", "pug" );
-app.set( "views", join( __dirname, "views" ));
 
 app.use( urlencoded({
   extended: true 

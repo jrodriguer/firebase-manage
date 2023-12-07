@@ -13,10 +13,6 @@ const upload = multer({
   dest: "uploads/" 
 });
 
-export const translationView = ( req, res ) => {
-  res.render( "translation" );
-};
-
 export const listVersions = ( req, res, next ) => {
   admin
     .remoteConfig()
