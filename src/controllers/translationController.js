@@ -23,7 +23,7 @@ export const listVersions = ( req, res, next ) => {
         versions.push( version );
       });
       res.send( versions );
-    }, next );
+    }, next ); // Send to centralized Express error handling.
 };
 
 export const downloadTemplate = ( req, res, next ) => {

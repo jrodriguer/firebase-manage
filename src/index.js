@@ -11,10 +11,7 @@ app.use( urlencoded({
 app.use( parser.json());
 
 app.use(( req, res, next ) => {
-  res.header( 
-    "Access-Control-Allow-Origin", 
-    "http://localhost:4200"
-  ),
+  res.header( "Access-Control-Allow-Origin", "*" ),
   res.header(
     "Access-Control-Allow-Methods",
     "GET,PUT,POST,DELETE,PATCH,OPTIONS"
@@ -25,7 +22,7 @@ app.use(( req, res, next ) => {
   );
 
   if ( req.method === "OPTIONS" ) {
-    res.send( 200 );
+    res.status( 200 );
   } 
   else {
     next();
